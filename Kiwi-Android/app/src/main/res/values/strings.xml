@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Kiwi-Ocean-Shapers</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="city_list">
+        <item>Bangkok</item>
+        <item>London</item>
+        <item>Paris</item>
+        <item>Singapore</item>
+        <item>New York</item>
+        <item>Istanbul</item>
+        <item>Dubai</item>
+        <item>Kuala Lumpur</item>
+        <item>Hong Kong</item>
+        <item>Barcelona</item>
+        <item>Bangkok</item>
+        <item>London</item>
+        <item>Paris</item>
+        <item>Singapore</item>
+        <item>New York</item>
+        <item>Istanbul</item>
+        <item>Dubai</item>
+        <item>Kuala Lumpur</item>
+        <item>Hong Kong</item>
+        <item>Barcelona</item>
+
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_scores"><b> My Scores</b></string>
+    <string name="all_time">All-Time High Score : </string>
+    <string name="last_played">Last Played Session :</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

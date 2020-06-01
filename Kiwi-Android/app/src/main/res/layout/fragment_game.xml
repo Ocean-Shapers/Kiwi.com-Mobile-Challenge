@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:scrolling_image_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        scrolling_image_view:layout_constraintBottom_toBottomOf="parent"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/london_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            scrolling_image_view:srcCompat="@drawable/london_map"/>
+
+        <ImageView
+            android:id="@+id/paris_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            scrolling_image_view:srcCompat="@drawable/paris_map" />
+
+        <ImageView
+            android:id="@+id/amsterdam_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            scrolling_image_view:srcCompat="@drawable/amsterdam_map" />
+
+        <ImageView
+            android:id="@+id/vienna_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            scrolling_image_view:srcCompat="@drawable/vienna_map" />
+
+        <ImageView
+            android:id="@+id/budapest_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            scrolling_image_view:srcCompat="@drawable/budapest_map" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/jump_down_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="50dp"
+        android:text="Jump Down"
+        scrolling_image_view:layout_constraintBottom_toBottomOf="parent"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent" />
+
+    <!--com.q42.android.scrollingimageview.ScrollingImageView
+        android:id="@+id/scrolling_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        scrolling_image_view:layout_constraintBottom_toBottomOf="parent"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintHorizontal_bias="0.0"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent"
+        scrolling_image_view:layout_constraintVertical_bias="0.0"
+        scrolling_image_view:speed="10dp"
+        scrolling_image_view:src="@drawable/ocean_background" /-->
+
+    <ImageView
+        android:id="@+id/gemImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="200dp"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintHorizontal_bias="0.5"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent"
+        scrolling_image_view:srcCompat="@drawable/budapest" />
+
+    <ImageView
+        android:id="@+id/fish_image"
+        android:layout_width="129dp"
+        android:layout_height="106dp"
+        android:layout_marginStart="150dp"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        scrolling_image_view:layout_constraintBottom_toBottomOf="parent"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent"
+        scrolling_image_view:srcCompat="@drawable/turtle" />
+
+    <ImageView
+        android:id="@+id/plastic2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="fitXY"
+        android:tag="1"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent"
+        scrolling_image_view:srcCompat="@drawable/plastic1" />
+
+    <ImageView
+        android:id="@+id/plastic1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="50dp"
+        android:scaleType="fitXY"
+        android:tag="1"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintTop_toTopOf="parent"
+        scrolling_image_view:srcCompat="@drawable/plastic3" />
+
+    <ImageView
+        android:id="@+id/plastic4"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:tag="1"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintTop_toBottomOf="@+id/plastic3"
+        scrolling_image_view:srcCompat="@drawable/plastic4" />
+
+    <ImageView
+        android:id="@+id/plastic3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/plastic2"
+        scrolling_image_view:layout_constraintEnd_toEndOf="parent"
+        scrolling_image_view:layout_constraintTop_toBottomOf="@+id/plastic2" />
+
+    <Button
+        android:id="@+id/jump_up_button"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="150dp"
+        android:text="Jump Up"
+        scrolling_image_view:layout_constraintBottom_toBottomOf="parent"
+        scrolling_image_view:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

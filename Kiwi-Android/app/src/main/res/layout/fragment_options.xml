@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/optionsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background"
+    tools:context=".fragment.OptionsFragment">
+
+    <Spinner
+        android:id="@+id/destinationsSpinner"
+        android:layout_width="200dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:alpha="0.7"
+        android:background="#5d6f9e"
+        android:textAlignment="center"
+        android:textSize= "20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset = "42dp" />
+
+    <Button
+        android:id="@+id/start_game"
+        android:layout_width="355dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@mipmap/start_game"
+        android:fontFamily="@font/rubik"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/scores_view"
+        android:layout_width="377dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.6"
+        android:background="#5d6f9e"
+        android:fontFamily="@font/rubik"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
