@@ -4,21 +4,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ScoresFragment">
-
-
-    <ImageView
-        android:id="@+id/background1ImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/london_map" />
-
-    <ImageView
-        android:id="@+id/background2ImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/paris_map" />
-
-</FrameLayout>
+    tools:context=".fragment.ScoresFragment"/>
