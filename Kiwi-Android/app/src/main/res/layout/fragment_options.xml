@@ -14,14 +14,14 @@
         android:layout_height="42dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        android:alpha="0.7"
+        android:alpha="0.6"
         android:background="#5d6f9e"
-        android:textAlignment="center"
-        android:textSize= "20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:dropDownVerticalOffset="42dp"
         android:spinnerMode="dropdown"
-        android:dropDownVerticalOffset = "42dp" />
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/start_game"
@@ -48,5 +48,69 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="377dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.8"
+        android:fontFamily="@font/rubik"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="21sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/session_score"
+        android:layout_width="377dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.6"
+        android:fontFamily="@font/rubik"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="21sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scoreHeader"
+        android:layout_width="377dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:text="@string/my_scores"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/kiwi_logo"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="80dp"
+        app:srcCompat="@drawable/kiwi_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/ocLogo"
+        android:layout_width="130dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/kiwi_logo"
+        app:srcCompat="@drawable/ocean_shapers_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,8 @@
     <string name="my_scores"><b> My Scores</b></string>
     <string name="all_time">All-Time High Score : </string>
     <string name="last_played">Last Played Session :</string>
-    <string name="title_activity_game">GameActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="fares_from">FAIRES FROM</string>
+    <string name="SPHighScore">high_score</string>
+    <string name="SPLastScore">last_score</string>
+    <string name="first_city"> Budapest</string>
 </resources>
