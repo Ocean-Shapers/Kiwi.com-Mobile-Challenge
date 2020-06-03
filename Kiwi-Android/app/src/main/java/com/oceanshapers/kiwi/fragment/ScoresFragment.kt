@@ -20,22 +20,4 @@ class ScoresFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_scores, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
-//    private val animatorListener : ValueAnimator.AnimatorUpdateListener = object : ValueAnimator.AnimatorUpdateListener
-//    {
-//        override fun onAnimationUpdate(animation: ValueAnimator?) {
-//            TODO("Not yet implemented")
-//            val progress = animation.animatedValue as Float
-//            val width = background1ImageView.getWidth()
-//            val translationX = width * progress
-//            background1ImageView.setTranslationX(translationX)
-//            background2ImageView.setTranslationX(translationX - width)
-//        }
-//
-//    }
-
 }
