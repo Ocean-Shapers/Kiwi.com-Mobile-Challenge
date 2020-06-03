@@ -25,14 +25,32 @@
         <item>Barcelona</item>
 
     </string-array>
+    <string-array name="destination_list">
+        <item>Budapest</item>
+        <item>Vienna</item>
+        <item>Amsterdam</item>
+        <item>Paris</item>
+        <item>London</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_scores"><b> My Scores</b></string>
     <string name="all_time">All-Time High Score : </string>
     <string name="last_played">Last Played Session :</string>
-    <string name="fares_from">FAIRES FROM</string>
+    <string name="fares_from">FARES FROM</string>
     <string name="SPHighScore">high_score</string>
     <string name="SPLastScore">last_score</string>
     <string name="first_city"> Budapest</string>
+    <string name="congratulations">CONGRATULATIONS!!</string>
+    <string name="main_text_1">You saved the turtle</string>
+    <string name="main_text_2">You managed to visit</string>
+    <string name="main_text_3">out of the 5 cities in this game and you unlocked special kiwi deals!</string>
+    <string name="main_text_4">Click on each city to view them</string>
+    <string name="gems_collected">Gems Collected:</string>
+    <string name="budapest_city_name">Budapest</string>
+    <string name="vienna_city_name">Vienna</string>
+    <string name="amsterdam_city_name">Amsterdam</string>
+    <string name="paris_city_name">Paris</string>
+    <string name="london_city_name">London</string>
 </resources>

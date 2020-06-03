@@ -50,6 +50,7 @@ class GameFragment : Fragment() {
     lateinit var runnable: Runnable
     var destinationUnlocked: String = "none"
     lateinit var sourceCountryString: String
+    var gameOver = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,9 +62,10 @@ class GameFragment : Fragment() {
     // background map order : Budapest -->Budapest - Vienna - Amsterdam - Paris - London
     override fun onStart() {
         super.onStart()
+        gameOver = false
         dashboard_text_header.text = resources.getString(R.string.first_city)
         dashboard_faires_text.text = resources.getString(R.string.fares_from)
-        //fare.text = "80" + "\u20ac"
+        fare.text = "80" + "\u20ac"
         score_text.text = currentSessionScore.toString()
         arguments?.getString("arguments")?.let {
             sourceCountryString= it
@@ -71,7 +73,7 @@ class GameFragment : Fragment() {
         val gemImageArray = intArrayOf(
             R.drawable.vienna, R.drawable.amsterdam, R.drawable.paris, R.drawable.london
         )
-        val destinationTextArray = arrayOf("Vienna", "Amsterdam", "Paris", "London")
+        val destinationTextArray = resources.getStringArray(R.array.destination_list)
         jump_up_button.setOnClickListener {
             fish_image.animate().x(fish_image.x).y(fish_image.y - 240).setDuration(200)
         }
@@ -86,6 +88,10 @@ class GameFragment : Fragment() {
             override fun run() {
                 if (i > 0) {
                     destinationUnlocked = destinationTextArray.get(i - 1)
+                }
+                else
+                {
+                    destinationUnlocked = resources.getString(R.string.budapest_city_name)
                 }
                 gemImage.setImageResource(gemImageArray.get(i))
                 //@norby : this is where the async task will be called to get the fare for this city.
@@ -161,6 +167,7 @@ class GameFragment : Fragment() {
                             plastic3
                         ) || detectCollisionWith(plastic4)
                     ) {
+                        gameOver = true
                         gameStatus.setBackgroundResource(R.drawable.game_over)
                         gameStatus.visibility = View.VISIBLE
                         stopbackgroundAnimations()
@@ -220,13 +227,15 @@ class GameFragment : Fragment() {
             // to next page
             handler.postDelayed(
                 {
-                    stopPlasticAnimations()
-                    stopTimers()
-                    gameStatus.setBackgroundResource(R.drawable.win)
-                    gameStatus.visibility = View.VISIBLE
-                    stopPlasticAnimations()
-                    stopTimers()
-                    goToLastPage()
+                    //stopPlasticAnimations()
+                    if(!gameOver) {
+                        stopTimers()
+                        gameStatus.setBackgroundResource(R.drawable.win)
+                        gameStatus.visibility = View.VISIBLE
+                        stopPlasticAnimations()
+                        stopTimers()
+                        goToLastPage()
+                    }
                 }, 2000
             )
         }

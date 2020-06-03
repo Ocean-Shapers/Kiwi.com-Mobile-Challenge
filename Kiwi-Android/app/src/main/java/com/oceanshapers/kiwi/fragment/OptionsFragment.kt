@@ -74,6 +74,17 @@ class OptionsFragment : Fragment() {
                 arguments = destinationSelected
             )
         }
+
+        //TESTING ONLY
+
+        scores_view.setOnClickListener {
+            fragmentUtil.replaceFragmentWith(
+                ScoresFragment(),
+                fragmentManager
+            )
+        }
+
+        //Testing block complete
     }
 }
 
