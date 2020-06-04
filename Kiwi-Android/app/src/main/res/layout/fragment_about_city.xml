@@ -7,24 +7,172 @@
     tools:context=".fragment.ScoresFragment"
     android:background="@mipmap/background">
 
+    <TextView
+        android:id="@+id/city_collect_text"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/collect_title" />
+
+    <TextView
+        android:id="@+id/city_env_desc"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_env_title" />
+
+    <TextView
+        android:id="@+id/collect_title"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:text="@string/collect_title"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_env_desc" />
+
+    <TextView
+        android:id="@+id/city_desc"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_title" />
+
+    <TextView
+        android:id="@+id/city_env_title"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:text="@string/env_title"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_desc" />
+
     <ImageView
         android:id="@+id/kiwi_logo"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="90dp"
+        android:layout_height="60dp"
         android:layout_marginStart="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/kiwi_logo" />
 
     <ImageView
         android:id="@+id/ocLogo"
-        android:layout_width="130dp"
-        android:layout_height="80dp"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/kiwi_logo"
         app:srcCompat="@drawable/ocean_shapers_logo" />
+
+    <ImageView
+        android:id="@+id/city_image"
+        android:layout_width="257dp"
+        android:layout_height="223dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="35dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/amsterdam_city"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:background="?attr/selectableItemBackground"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="&lt;"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/city_title"
+        android:layout_width="350dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/visit_text"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ocLogo" />
+
+    <TextView
+        android:id="@+id/fares_text"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="20dp"
+        android:alpha="0.7"
+        android:background="#5d6f9e"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/visit_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

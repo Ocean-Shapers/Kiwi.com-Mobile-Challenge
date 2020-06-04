@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
 import com.oceanshapers.kiwi.R
 import com.oceanshapers.kiwi.search.CheapestFlightSearchService
-import com.oceanshapers.kiwi.search.Country
 import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_game.*
 import java.io.IOException
@@ -68,7 +67,7 @@ class GameFragment : Fragment() {
         fare.text = "80" + "\u20ac"
         score_text.text = currentSessionScore.toString()
         arguments?.getString("arguments")?.let {
-            sourceCountryString= it
+            sourceCountryString = it
         }
         val gemImageArray = intArrayOf(
             R.drawable.vienna, R.drawable.amsterdam, R.drawable.paris, R.drawable.london
@@ -82,21 +81,18 @@ class GameFragment : Fragment() {
         }
         gameOverTimer()
         sessionScoreTimer()
-
         runnable = object : Runnable {
             var i = 0
             override fun run() {
                 if (i > 0) {
                     destinationUnlocked = destinationTextArray.get(i - 1)
-                }
-                else
-                {
+                } else {
                     destinationUnlocked = resources.getString(R.string.budapest_city_name)
                 }
                 gemImage.setImageResource(gemImageArray.get(i))
                 //@norby : this is where the async task will be called to get the fare for this city.
                 //findFare(sourceCountryString,gemImageArray.get(i).toString(),fare).execute()
-                dashboard_text_header.text = destinationTextArray.get(i)
+                dashboard_text_header.text = destinationTextArray.get(i + 1)
                 i++
                 handler.postDelayed(this, 20000)
             }
@@ -121,7 +117,6 @@ class GameFragment : Fragment() {
             start()
         }
     }
-
     fun setAnimationProperties(
         animation: ValueAnimator,
         firstImageView: ImageView,
@@ -138,6 +133,7 @@ class GameFragment : Fragment() {
             followingImageView.setTranslationX(translationX - width)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -147,6 +143,7 @@ class GameFragment : Fragment() {
         startAnimation(plastic4, -(displayMetrics.widthPixels * 2).toFloat(), 15000, 18000)
         startAnimation(gemImage, -(displayMetrics.widthPixels).toFloat(), 0, 3000)
     }
+
     fun startAnimation(
         plastic: ImageView,
         transitionTo: Float,
@@ -159,6 +156,7 @@ class GameFragment : Fragment() {
         plasticAnimation.startDelay = delay
         plasticAnimation.start()
     }
+    //Method to detect game over if turtle collides with plastic
     fun gameOverTimer() {
         gameOverTimer.schedule(object : TimerTask() {
             override fun run() {
@@ -187,6 +185,7 @@ class GameFragment : Fragment() {
         parisLondon.cancel()
         plasticAnimation.cancel()
     }
+
     fun stopTimers() {
         if (gameOverTimer != null) {
             gameOverTimer.cancel()
@@ -206,7 +205,7 @@ class GameFragment : Fragment() {
         plastic4.visibility = View.GONE
         gemImage.visibility = View.GONE
     }
-
+    // Method to keep track of user score when turtle collides with the gems.
     fun sessionScoreTimer() {
         sessionScoreTimer.schedule(object : TimerTask() {
             override fun run() {
@@ -220,6 +219,8 @@ class GameFragment : Fragment() {
         }, 0, 300) // Delay of 5 milliseconds for user to get a hang of all game components
     }
 
+    // Need this method to navigate to the scores page 2000 milliseconds after turtle reaches last city - London
+    // That means user has completed the game.
     val gameWinListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
         override fun onAnimationRepeat(animation: Animator?) {}
         override fun onAnimationEnd(animation: Animator?) {
@@ -227,8 +228,7 @@ class GameFragment : Fragment() {
             // to next page
             handler.postDelayed(
                 {
-                    //stopPlasticAnimations()
-                    if(!gameOver) {
+                    if (!gameOver) {
                         stopTimers()
                         gameStatus.setBackgroundResource(R.drawable.win)
                         gameStatus.visibility = View.VISIBLE
@@ -239,10 +239,12 @@ class GameFragment : Fragment() {
                 }, 2000
             )
         }
+
         override fun onAnimationCancel(animation: Animator?) {}
         override fun onAnimationStart(animation: Animator?) {}
     }
 
+    // Post game over or game win navigate to scores page after 2000milliseconds.
     fun goToLastPage() {
         val fragmentUtil = FragmentUtil()
         val fragmentManager = activity!!.supportFragmentManager
@@ -251,6 +253,7 @@ class GameFragment : Fragment() {
         }, 2000)
     }
 
+    // method to detect if turtle collides with any object - plastic or gem.
     fun detectCollisionWith(objectToCollideWith: ImageView): Boolean {
         var collisionDetected = false
         //Need to adjust the cordinates since the image doesnot fill up the entire view so collision
@@ -272,7 +275,7 @@ class GameFragment : Fragment() {
         return collisionDetected
     }
 
-    //Logic to store high score and session score in shared preferences.
+    //Logic to store high score and session score in shared preferences post game over.
     override fun onStop() {
         super.onStop()
         val sharedPreference = activity!!.getPreferences(Context.MODE_PRIVATE) ?: return
@@ -288,35 +291,41 @@ class GameFragment : Fragment() {
             commit()
         }
     }
-private class findFare(sourceCountry: String, destinationCountry: String, textView: TextView) : AsyncTask<Void, Void, Void>() {
-    var sourceCountryString = sourceCountry
-    var destinationCountryString = destinationCountry
-    var cheapestFare : BigDecimal = BigDecimal.ZERO
-    var textViewToUpdate = textView
 
-    override fun doInBackground(vararg params: Void?): Void? {
-        try {
-            //get country object for both source and destination
-            val sourceCountryObject = CountrySearchService().searchByString("Germany")
-            val destinationCountryObject = CountrySearchService().searchByString("Hungary")
-            System.out.println("DEBUG : sourceCountryObject : " +sourceCountryObject)
-            System.out.println("DEBUG : destinationCountryObject : " +destinationCountryObject)
-            val cheapestFlight = CheapestFlightSearchService().search(sourceCountryObject.get(0),destinationCountryObject.get(0))
-           // cheapestFare = cheapestFlight!!.price
-            System.out.println("DEBUG : cheapestFare : " +cheapestFlight)
-        }
-        catch(exception:IOException)
-        {
-            exception.printStackTrace()
-        }
-        return null
-    }
+    /*
+        Async task to interact with kiwi api to get cheapest flight.
+     */
+    private class findFare(sourceCountry: String, destinationCountry: String, textView: TextView) :
+        AsyncTask<Void, Void, Void>() {
+        var sourceCountryString = sourceCountry
+        var destinationCountryString = destinationCountry
+        var cheapestFare: BigDecimal = BigDecimal.ZERO
+        var textViewToUpdate = textView
 
-    override fun onPostExecute(result: Void?) {
-        super.onPostExecute(result)
-        textViewToUpdate.text = cheapestFare.toString()+"\u20ac"
+        override fun doInBackground(vararg params: Void?): Void? {
+            try {
+                //get country object for both source and destination
+                val sourceCountryObject = CountrySearchService().searchByString("Germany")
+                val destinationCountryObject = CountrySearchService().searchByString("Hungary")
+                System.out.println("DEBUG : sourceCountryObject : " + sourceCountryObject)
+                System.out.println("DEBUG : destinationCountryObject : " + destinationCountryObject)
+                val cheapestFlight = CheapestFlightSearchService().search(
+                    sourceCountryObject.get(0),
+                    destinationCountryObject.get(0)
+                )
+                // cheapestFare = cheapestFlight!!.price
+                System.out.println("DEBUG : cheapestFare : " + cheapestFlight)
+            } catch (exception: IOException) {
+                exception.printStackTrace()
+            }
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            textViewToUpdate.text = cheapestFare.toString() + "\u20ac"
+        }
     }
-}
 }
 
 

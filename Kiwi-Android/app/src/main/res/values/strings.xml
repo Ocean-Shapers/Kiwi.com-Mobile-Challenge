@@ -53,4 +53,41 @@
     <string name="amsterdam_city_name">Amsterdam</string>
     <string name="paris_city_name">Paris</string>
     <string name="london_city_name">London</string>
+    <string name="visit">Visit</string>
+    <string name="from">From</string>
+    <string name="env_title">Environmental Aspects/ Fun Facts</string>
+    <string name="city_title">Tourism Importance</string>
+    <string name="collect_title">In Game Collectible </string>
+    <string name="Budapest_tourism">Budapest is one of the most beautiful cities in Europe. The dramatic skyline that Budapest is
+most famous for is peppered with 19th-century architectural wonders alongside the Danube River. Notable
+landmarks include the majestic riverside Parliament Building and Buda Castle \ Castle Hill, a collection of
+stunning basilicas. 5 Traditional Foods to Try in Budapest: Lángos (Fried Dough) , Halászlé (Fisherman\'s
+Soup) , Gulyás (Goulash), Paprikás Csirke (Chicken Paprikash, Kürtöskalács (Chimney Cake)</string>
+    <string name="Budapest_collect">Kürtöskalács (Chimney Cake):Kürtőskalács is made from sweet, yeast dough (raised dough), of which a strip
+is spun and then wrapped around a truncated cone–shaped baking spit, and rolled in granulated sugar.</string>
+    <string name="Budapest_env">Hungary’s largest river cleanup initiative is the Tisza Pet Cup, which organizes competitions for plastic
+collection throughout the year. They collected more than 670.000 plastic bottles already.</string>
+    <string name="Vienna_tourism">Austria\'s Imperial capital offers a unique blend of imperial traditions and stunning modern architecture. It
+is famous for its imperial sights, its cultural events, coffee houses, cozy wine taverns, and the very special Viennese charm. rom music, art, palaces to shopping and food, here are just five reasons to visit one of
+Europe\'s most fascinating cities. Vienna is known as a city for classical music which can be enjoyed in virtually every square, park and cafe. The jazz scene is also stellar.
+5 Traditional Foods to Try in Vienna: Wiener Schnitzel, The Sachertorte,Apfelstrudel (Apple Strudel), Spargel (Spring Asparagus), Sacher-Torte Cake</string>
+    <string name="Vienna_collect">Sacher-Torte Cake: A chocolate cake covered with apricot jam and chocolate icing, usually served with
+whipped cream.</string>
+    <string name="Vienna_env">Vienna is part of the INTERREG program, that is one of the biggest Danube cleanup program is Europe,
+which is searching for sustainable solutions to avoid plastic pollution in the Danube.</string>
+    <string name="Amsterdam_tourism">Amsterdam is famous for its canals, beautiful houses, \'coffee\'; shops and there\'s plenty more to this liberal
+city than most visitors realise.The central \"inner canal belt\"; area of Amsterdam is bordered by Central Station (CS) to the North and the
+Leidseplein/Museum area to the South. On the Western edge is the Jordaan area and to the East is Oosterpark, the docks area and the Amstel River. This map shows the area and the main visitor sights.
+5 Traditional Foods to Try in Amsterdam: Stroopwafel, Herring, Cod, Poffertjes, Chutney</string>
+    <string name="Amsterdam_collect">Wooden clogs: The Dutch have been wearing wooden shoes, or clogs, or "Klompen" since medieval
+times. … The wood also absorbs perspiration so that the foot can breathe.</string>
+    <string name="Amsterdam_env">Netherland is the home of the Ocean Cleanup Project, that is aiming to clean up 90% of the worlds ocean
+plastic globally.</string>
+    <string name="Paris_tourism">Paris is famous for its cafe culture, the Eiffel Tower, the Louvre, Notre Dame, the Moulin Rouge, pastries, and fashion. Paris is often seen as having beauty, elegance, and as being a boldly romantic city. Cruising the river as it winds through Paris is one of the most romantic things visitors can do. Seine cruises pass under numerous bridges in Paris, going by such sights as the Louvre, Notre Dame Cathedral and the Eiffel Tower. A Seine cruise also is a good way to experience Paris at night.</string>
+    <string name="Paris_collect">Paris baguette:  A baguette is a long, thin loaf of French bread that is commonly made from basic lean dough. It is distinguishable by its length and crisp crust.</string>
+    <string name="Paris_env">Paris is dedicated to protect the environment and decided to allocate 1 Billion euro to clean up the River Seine.</string>
+    <string name="London_tourism">London is famous for more than its magnificent ancient buildings, the Palace of Westminster, Trafalgar Square, Tower of London, London Eye, Art Galleries, and Big Ben.
+</string>
+    <string name="London_collect">London telephone box: There are currently 5,023 red phone boxes, or kiosks as they\'re officially known, up for grabs across the UK including 970 in the South West, 741 </string>
+    <string name="London_env">London’s River Thames has been selected as the cleanest river in the world which goes through a capital city. Sixty-five years ago, the River Thames was one of the dirtiest river – but today it is a clean home to seals, porpoises and sometimes the stray whale.</string>
 </resources>

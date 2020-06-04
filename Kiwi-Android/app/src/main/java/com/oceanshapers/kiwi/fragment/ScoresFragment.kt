@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.fragment_scores.*
  * A simple [Fragment] subclass.
  */
 class ScoresFragment : Fragment() {
-    //val destination = arrayOf("Budapest", "Vienna", "Amsterdam", "Paris", "London")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,7 +55,7 @@ class ScoresFragment : Fragment() {
             listOfImages.get(i).setBackgroundColor(Color.parseColor("#5d6f9e"))
         }
         //for loop to unlock cities visited, click on any of these cities should take you to the about city page.
-        for (i in 0 until noOfCitiesVisited - 1) {
+        for (i in 0 until noOfCitiesVisited) {
             listOfImages.get(i).setOnClickListener {
                 fragmentUtil.replaceFragmentWith(
                     AboutCityFragment(),

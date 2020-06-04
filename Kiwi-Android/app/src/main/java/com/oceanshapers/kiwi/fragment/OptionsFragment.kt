@@ -22,11 +22,6 @@ class OptionsFragment : Fragment() {
     var allTimeHighScore = 0
     lateinit var destinationSelected: String
 
-    //val sharedPreference =  activity!!.applicationContext.getSharedPreferences("scores",Context.MODE_PRIVATE)
-    /*
-    List of todos for this page :
-    TODO("Add kiwi api result to get list of cities")
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,17 +69,6 @@ class OptionsFragment : Fragment() {
                 arguments = destinationSelected
             )
         }
-
-        //TESTING ONLY
-
-        scores_view.setOnClickListener {
-            fragmentUtil.replaceFragmentWith(
-                ScoresFragment(),
-                fragmentManager
-            )
-        }
-
-        //Testing block complete
     }
 }
 
