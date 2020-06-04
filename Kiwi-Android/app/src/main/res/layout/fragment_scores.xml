@@ -4,8 +4,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ScoresFragment"
-    android:background="@mipmap/background">
+    android:background="@mipmap/background"
+    tools:context=".fragment.ScoresFragment">
+
+    <FrameLayout
+        android:id="@+id/budapest_frame"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@+id/congratulations"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/budapest_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.5"
+            android:scaleType="fitXY"
+            android:src="@drawable/budapest_city" />
+
+        <TextView
+            android:id="@+id/budapest_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/budapest_city_name"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/vienna_frame"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@+id/budapest_frame"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/vienna_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:scaleType="fitXY"
+            android:src="@drawable/vienna_city" />
+
+        <TextView
+            android:id="@+id/vienna_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/vienna_city_name"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+        />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/amsterdam_frame"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/congratulations"
+        app:layout_constraintTop_toBottomOf="@+id/budapest_frame">
+
+        <ImageView
+            android:id="@+id/amsterdam_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:scaleType="fitXY"
+            android:src="@drawable/amsterdam_city" />
+
+        <TextView
+            android:id="@+id/amsterdam_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/amsterdam_city_name"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/paris_frame"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toEndOf="@+id/amsterdam_frame"
+        app:layout_constraintTop_toBottomOf="@+id/vienna_frame">
+
+        <ImageView
+            android:id="@+id/paris_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:scaleType="fitXY"
+            android:src="@drawable/paris_city" />
+
+        <TextView
+            android:id="@+id/paris_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/paris_city_name"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/london_frame"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="186dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@+id/ocLogo"
+        app:layout_constraintTop_toBottomOf="@+id/paris_frame">
+
+        <ImageView
+            android:id="@+id/london_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:scaleType="fitXY"
+            android:src="@drawable/london_city" />
+
+        <TextView
+            android:id="@+id/london_city_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/london_city_name"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="21sp"
+            android:textStyle="bold" />
+        />
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/kiwi_logo"
@@ -27,13 +180,75 @@
         app:layout_constraintStart_toEndOf="@+id/kiwi_logo"
         app:srcCompat="@drawable/ocean_shapers_logo" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/congratulations"
         android:layout_width="352dp"
-        android:layout_height="252dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/last_page"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/congratulations"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/main_text_1"
+        android:layout_width="352dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/rubik"
+        android:text="@string/main_text_1"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/congratulations" />
+
+    <TextView
+        android:id="@+id/main_text_2_3"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/rubik"
+        android:lines="5"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_text_1" />
+
+    <TextView
+        android:id="@+id/congratulations4"
+        android:layout_width="352dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/rubik"
+        android:lines="2"
+        android:text="@string/main_text_4"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_text_2_3" />
+
+    <TextView
+        android:id="@+id/gems_collected"
+        android:layout_width="237dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="30dp"
+        android:alpha="0.7"
+        android:background="#5d6f9e"
+        android:fontFamily="@font/rubik"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/congratulations4" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

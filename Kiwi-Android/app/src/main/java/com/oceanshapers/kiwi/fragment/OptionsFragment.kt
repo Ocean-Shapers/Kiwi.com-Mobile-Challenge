@@ -1,6 +1,7 @@
 package com.oceanshapers.kiwi.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,27 +18,18 @@ import kotlinx.android.synthetic.main.fragment_options.*
  * A simple [Fragment] subclass.
  */
 class OptionsFragment : Fragment() {
-    /*
-    List of todos for this page :
-    TODO("Drop down of cities need to be drop down instead of modal") --> done
-    TODO("Add kiwi api result to get list of cities")
-    TODO("Set city selected as from city for fare calculation on next page")
-    TODO("Show kiwi logo and ocean shaper logo on this page")
-    TODO("Add gradient to scores text bx as per design") --> done
-    TODO("Cities drop down needs to have gradient") --> done
-    TODO("Session to save last played score and high score of user to display here")
-    TODO("MY SCORES text to be bold rest two lines to be regular")
-     */
+    var lastSessionScore = 0
+    var allTimeHighScore = 0
+    lateinit var destinationSelected: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view: View = inflater.inflate(
             R.layout.fragment_options, container,
             false
         )
-
         return view
     }
 
@@ -50,45 +42,33 @@ class OptionsFragment : Fragment() {
         )
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()
+        val sharedPreference = activity!!.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPreference != null) {
+            allTimeHighScore = sharedPreference.getInt(resources.getString(R.string.SPHighScore), 0)
+            lastSessionScore = sharedPreference.getInt(resources.getString(R.string.SPLastScore), 0)
+        }
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         destinationsSpinner.adapter = adapter
         destinationsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                getValues()
+                destinationSelected = destinationsSpinner.selectedItem.toString()
             }
-
         }
-        scores_view.text =
-           "\n" + getString(R.string.my_scores) + "\n" + getString(R.string.all_time) + " 105" + "\n" + getString(
-                R.string.last_played
-            ) + " 40"
+        session_score.text = resources.getString(R.string.last_played) + " " + lastSessionScore
+        high_score.text = resources.getString(R.string.all_time) + " " + allTimeHighScore
         start_game.setOnClickListener {
-//            val intent = Intent (getActivity(), GameActivity::class.java)
-//            activity!!.startActivity(intent)
-            fragmentUtil.replaceFragmentWith(GameFragment(), fragmentManager)
+            fragmentUtil.replaceFragmentWith(
+                GameFragment(),
+                fragmentManager,
+                arguments = destinationSelected
+            )
         }
-        scores_view.setOnClickListener {
-            fragmentUtil.replaceFragmentWith(ScoresFragment(), fragmentManager)
-        }
-
-    }
-
-    fun getValues() {
-        Toast.makeText(
-            activity!!.applicationContext,
-            "Destination selected : " + destinationsSpinner.selectedItem.toString(),
-            Toast.LENGTH_LONG
-        ).show()
-
     }
 }
 
