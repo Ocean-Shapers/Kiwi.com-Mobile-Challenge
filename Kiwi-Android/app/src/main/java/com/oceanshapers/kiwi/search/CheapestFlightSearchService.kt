@@ -14,17 +14,21 @@ class CheapestFlightSearchService {
         private const val FLIGHT_DATE_FORMAT = "MM/dd/yyyy"
         private const val DATA_JSON_KEY = "data"
         private const val PRICE_JSON_KEY = "price"
+        private const val NUMBER_OF_WEEK = 7L
     }
 
     fun search(departureCountry: Country, destinationCountry: Country): CheapestFlight? {
-        val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern(FLIGHT_DATE_FORMAT));
+        val dateFormat = DateTimeFormatter.ofPattern(FLIGHT_DATE_FORMAT)
+        val currentDate = LocalDate.now()
+        val formattedCurrentDate = currentDate.format(dateFormat)
+        val formattedNextWeekDate = currentDate.plusDays(NUMBER_OF_WEEK).format(dateFormat)
         val response = khttp.get(
             String.format(
                 FLIGHT_URL,
                 departureCountry.countryCode,
                 destinationCountry.countryCode,
-                currentDate,
-                currentDate
+                formattedCurrentDate,
+                formattedNextWeekDate
             )
         )
         var cheapestFlight: CheapestFlight? = null
