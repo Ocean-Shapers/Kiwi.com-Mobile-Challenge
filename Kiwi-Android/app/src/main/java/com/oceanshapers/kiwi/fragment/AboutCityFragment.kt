@@ -1,6 +1,7 @@
 package com.oceanshapers.kiwi.fragment
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_game.*
  * A simple [Fragment] subclass.
  */
 class AboutCityFragment : Fragment() {
-
+    lateinit var mediaPlayer: MediaPlayer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +44,9 @@ class AboutCityFragment : Fragment() {
             lastVisited = it
         }
        back.setOnClickListener{
+           stopPreviousAudio()
+           mediaPlayer = MediaPlayer.create(context, resources.getIdentifier("go_back","raw",activity!!.packageName))
+           mediaPlayer.start()
             fragmentUtil.replaceFragmentWith(
                 ScoresFragment(),
                 fragmentManager,
@@ -51,8 +55,6 @@ class AboutCityFragment : Fragment() {
                 lastVisited = lastVisited
             )
         }
-
-        val sharedPreference = activity!!.getPreferences(Context.MODE_PRIVATE)
         val imageResourceName = destinationCity.toString().toLowerCase() + "_city"
         val id = resources.getIdentifier(imageResourceName,"drawable", activity!!.packageName)
         city_image.setImageResource(id)
@@ -70,10 +72,21 @@ class AboutCityFragment : Fragment() {
                 sourceCountry, destinationCountry
             )
             activity!!.runOnUiThread {
-                fares_text.visibility = View.VISIBLE
-                fares_text.text = resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
+                if(fares_text!=null)
+                {
+                    fares_text.visibility = View.VISIBLE
+                    fares_text.text = resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
+                }
             }
         }.start()
+    }
+
+    private fun stopPreviousAudio()
+    {
+        if (this::mediaPlayer.isInitialized)
+        {
+            mediaPlayer.stop()
+        }
     }
 
 }

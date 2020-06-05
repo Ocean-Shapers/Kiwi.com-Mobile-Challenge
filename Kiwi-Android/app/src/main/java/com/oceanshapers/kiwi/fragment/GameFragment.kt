@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -21,6 +22,7 @@ import com.oceanshapers.kiwi.search.Country
 import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_game.*
 import java.util.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -46,6 +48,10 @@ class GameFragment : Fragment() {
     var turtleUpperLimit = 0.0f
     var turtleLowerLimit = 0.0f
     var turtleLimitSet = false
+    lateinit var turtleUpSound: MediaPlayer
+    lateinit var turtledownSound: MediaPlayer
+    lateinit var turtleCollectsSound: MediaPlayer
+    lateinit var gameOverSound: MediaPlayer
 
 
     override fun onCreateView(
@@ -59,6 +65,10 @@ class GameFragment : Fragment() {
     // background map order : Budapest -->Budapest - Vienna - Amsterdam - Paris - London
     override fun onStart() {
         super.onStart()
+        turtleUpSound = MediaPlayer.create(context, resources.getIdentifier("turtle_up","raw",activity!!.packageName))
+        turtledownSound = MediaPlayer.create(context, resources.getIdentifier("turtle_dives","raw",activity!!.packageName))
+        turtleCollectsSound = MediaPlayer.create(context, resources.getIdentifier("turtle_collects_item","raw",activity!!.packageName))
+        gameOverSound = MediaPlayer.create(context, resources.getIdentifier("game_over","raw",activity!!.packageName))
         arguments?.getString("source")?.let {
             sourceCountryString = it
         }
@@ -77,6 +87,8 @@ class GameFragment : Fragment() {
                 setTurtleLimits()
             }
             if (turtle.y - 240 >= turtleUpperLimit) {
+
+                turtleUpSound.start()
                 turtle.animate().x(turtle.x).y(turtle.y - 240).setDuration(200)
             }
         }
@@ -85,6 +97,7 @@ class GameFragment : Fragment() {
                 setTurtleLimits()
             }
             if (turtle.y + 240 <= turtleLowerLimit) {
+               turtledownSound.start()
                 turtle.animate().x(turtle.x).y(turtle.y + 240).setDuration(200)
             }
         }
@@ -234,6 +247,7 @@ class GameFragment : Fragment() {
                             plastic3
                         ) || detectCollisionWith(plastic4)
                     ) {
+                        gameOverSound.start()
                         gameOver = true
                         gameStatus.setBackgroundResource(R.drawable.game_over)
                         gameStatus.visibility = View.VISIBLE
@@ -283,6 +297,7 @@ class GameFragment : Fragment() {
             override fun run() {
                 activity!!.runOnUiThread {
                     if (detectCollisionWith(collectible)) {
+                        turtleCollectsSound.start()
                         collectible.visibility = View.INVISIBLE
                         currentSessionScore = currentSessionScore + 5
                         score_text.text = currentSessionScore.toString()

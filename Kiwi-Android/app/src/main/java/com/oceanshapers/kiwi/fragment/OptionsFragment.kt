@@ -2,6 +2,7 @@ package com.oceanshapers.kiwi.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -77,6 +78,8 @@ class OptionsFragment : Fragment() {
             if (sourceSelected == resources.getString(R.string.select_source)){
                 Toast.makeText(context, "Please select source country from dropdown on the left", Toast.LENGTH_SHORT).show()
             } else {
+                var mediaPlayer = MediaPlayer.create(context, resources.getIdentifier("start_game","raw",activity!!.packageName))
+                mediaPlayer.start()
                 fragmentUtil.replaceFragmentWith(
                     GameFragment(),
                     fragmentManager,

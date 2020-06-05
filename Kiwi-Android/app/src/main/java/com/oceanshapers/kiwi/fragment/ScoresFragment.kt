@@ -2,6 +2,7 @@ package com.oceanshapers.kiwi.fragment
 
 import android.content.Context
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_scores.*
  * A simple [Fragment] subclass.
  */
 class ScoresFragment : Fragment() {
+    lateinit var mediaPlayer: MediaPlayer
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +66,11 @@ class ScoresFragment : Fragment() {
         for (i in noOfCitiesVisited until listOfImages.size) {
             listOfImages.get(i).setImageDrawable(null)
             listOfImages.get(i).setBackgroundColor(Color.parseColor("#5d6f9e"))
+            listOfImages.get(i).setOnClickListener{
+                stopPreviousAudio()
+                mediaPlayer = MediaPlayer.create(context, resources.getIdentifier("city_locked","raw",activity!!.packageName))
+                mediaPlayer.start()
+            }
         }
         //for loop to unlock cities visited, click on any of these cities should take you to the about city page.
         for (i in 0 until noOfCitiesVisited) {
@@ -78,5 +85,14 @@ class ScoresFragment : Fragment() {
             }
         }
     }
+    private fun stopPreviousAudio()
+    {
+        if (this::mediaPlayer.isInitialized)
+        {
+            mediaPlayer.stop()
+        }
+    }
+
+
 
 }
