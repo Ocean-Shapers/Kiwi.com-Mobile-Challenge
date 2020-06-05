@@ -99,17 +99,17 @@
         android:layout_width="100dp"
         android:layout_height="80dp"
         android:layout_marginStart="30dp"
-        android:layout_marginBottom="80dp"
-        app:srcCompat="@drawable/kiwi_logo"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/kiwi_logo" />
 
     <ImageView
         android:id="@+id/ocLogo"
         android:layout_width="130dp"
         android:layout_height="80dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/kiwi_logo"
         app:srcCompat="@drawable/ocean_shapers_logo" />

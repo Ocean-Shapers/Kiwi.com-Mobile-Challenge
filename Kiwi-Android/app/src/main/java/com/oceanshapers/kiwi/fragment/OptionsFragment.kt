@@ -35,19 +35,23 @@ class OptionsFragment : Fragment() {
         return view
     }
 
+
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var sourceCountries: MutableList<String> = mutableListOf<String>()
         sourceCountries.add(resources.getString(R.string.select_source))
+        sourceCountries.add("Loading countries ...")
         Thread {
             val countries = CountrySearchService().searchAllCountries()
+            sourceCountries.remove("Loading countries ...")
             for (i in 0..(countries.size - 1)) {
                 sourceCountries.add(countries.get(i).name)
             }
+            //}
         }.start()
         val adapter = ArrayAdapter(
-            activity!!.applicationContext, android.R.layout.select_dialog_item, sourceCountries
+            activity!!.applicationContext, R.layout.custom_spinner_item, sourceCountries
         )
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()
@@ -75,10 +79,17 @@ class OptionsFragment : Fragment() {
         session_score.text = resources.getString(R.string.last_played) + " " + lastSessionScore
         high_score.text = resources.getString(R.string.all_time) + " " + allTimeHighScore
         start_game.setOnClickListener {
-            if (sourceSelected == resources.getString(R.string.select_source)){
-                Toast.makeText(context, "Please select source country from dropdown on the left", Toast.LENGTH_SHORT).show()
+            if (sourceSelected == resources.getString(R.string.select_source)) {
+                Toast.makeText(
+                    context,
+                    "Please select source country from dropdown on the left",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                var mediaPlayer = MediaPlayer.create(context, resources.getIdentifier("start_game","raw",activity!!.packageName))
+                var mediaPlayer = MediaPlayer.create(
+                    context,
+                    resources.getIdentifier("start_game", "raw", activity!!.packageName)
+                )
                 mediaPlayer.start()
                 fragmentUtil.replaceFragmentWith(
                     GameFragment(),

@@ -188,7 +188,7 @@ class GameFragment : Fragment() {
                 sourceCountry, destinationCountry
             )
             activity!!.runOnUiThread {
-                if (cheapestFlight?.price != null) {
+                if (cheapestFlight?.price != null && fare !=null) {
                     fare.text = cheapestFlight?.price.toString() + "\u20ac"
                     showDashboard()
                 }
@@ -236,12 +236,11 @@ class GameFragment : Fragment() {
         collectibleAnimation.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
                 val random = (0..2).random()
-                System.out.println("random : " + random.toString())
-                if (random == 1 && collectible.y - 200 > turtleUpperLimit) {
-                    collectible.y = collectible.y - 200
+                if (random == 1 && collectible.y - 220 > turtleUpperLimit) {
+                    collectible.y = collectible.y - 220
                 }
-                if (random == 2 && collectible.y + 200 < turtleLowerLimit) {
-                    collectible.y = collectible.y + 200
+                if (random == 2 && collectible.y + 220 < turtleLowerLimit) {
+                    collectible.y = collectible.y + 220
                 }
                 collectible.visibility = View.VISIBLE
             }
@@ -275,6 +274,7 @@ class GameFragment : Fragment() {
                             plastic3
                         ) || detectCollisionWith(plastic4)
                     ) {
+                        disableButtonsOnGameEnd()
                         gameOverSound.start()
                         gameOver = true
                         gameStatus.setBackgroundResource(R.drawable.game_over)
@@ -289,6 +289,13 @@ class GameFragment : Fragment() {
         }, 0, 10) // Delay of 5 milliseconds for user to get a hang of all game components
     }
 
+    fun disableButtonsOnGameEnd()
+    {
+        jump_up_button.isEnabled = false
+        jump_up_button.isClickable = false
+        jump_down_button.isClickable = false
+        jump_down_button.isEnabled = false
+    }
     fun stopbackgroundAnimations() {
         budapestVienna.cancel()
         viennaAmsterdam.cancel()
@@ -345,6 +352,7 @@ class GameFragment : Fragment() {
             handler.postDelayed(
                 {
                     if (!gameOver) {
+                        disableButtonsOnGameEnd()
                         destinationUnlocked = resources.getString(R.string.london_city_name)
                         stopTimers()
                         gameStatus.setBackgroundResource(R.drawable.win)

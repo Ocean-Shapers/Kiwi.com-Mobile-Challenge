@@ -47,6 +47,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="select_source">Select Source</string>
+    <string name="loading">Loading Countries...</string>
     <string name="my_scores"><b> My Scores</b></string>
     <string name="all_time">All-Time High Score : </string>
     <string name="last_played">Last Played Session :</string>

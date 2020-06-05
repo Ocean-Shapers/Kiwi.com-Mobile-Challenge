@@ -72,8 +72,13 @@ class AboutCityFragment : Fragment() {
                 sourceCountry, destinationCountry
             )
             activity!!.runOnUiThread {
-                if(fares_text!=null)
+                if(cheapestFlight?.price == null)
                 {
+                    visit_text.visibility = View.INVISIBLE
+                }
+                if(fares_text!=null && cheapestFlight?.price !=null)
+                {
+                    visit_text.visibility = View.VISIBLE
                     fares_text.visibility = View.VISIBLE
                     fares_text.text = resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
                 }
