@@ -23,6 +23,7 @@
             android:spinnerMode="dropdown"
             android:textAlignment="center"
             android:textSize="20sp" />
+
     <Button
         android:id="@+id/start_game"
         android:layout_width="355dp"

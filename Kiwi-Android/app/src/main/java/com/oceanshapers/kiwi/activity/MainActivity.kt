@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         requestedOrientation = SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-       fragmentTransaction.replace(R.id.activity_main,OptionsFragment())
+        val fragmentTransaction = fragmentManager.beginTransaction()wq:wq
+        fragmentTransaction.replace(R.id.activity_main, OptionsFragment())
         fragmentTransaction.commit()
 
     }

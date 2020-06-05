@@ -4,49 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ScoresFragment"
-    android:background="@mipmap/background">
+    android:background="@mipmap/background"
+    tools:context=".fragment.ScoresFragment">
 
     <TextView
-        android:id="@+id/city_collect_text"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
+        android:id="@+id/city_title"
+        android:layout_width="400dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/rubik"
         android:gravity="center"
-        android:textAlignment="textStart"
         android:textColor="#000000"
-        android:textSize="12sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/collect_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/city_env_desc"
-        android:layout_width="370dp"
+        android:id="@+id/city_desc"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/rubik"
+        android:gravity="start"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_title" />
+
+    <TextView
+        android:id="@+id/city_env_title"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="2dp"
         android:fontFamily="@font/rubik"
         android:gravity="center"
-        android:textAlignment="textStart"
+        android:text="@string/env_title"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/city_image"
+        app:layout_constraintTop_toBottomOf="@+id/city_desc" />
+
+    <TextView
+        android:id="@+id/city_env_desc"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/rubik"
         android:textColor="#000000"
         android:textSize="12sp"
-        android:textStyle="bold"
+        android:gravity="start"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/city_image"
         app:layout_constraintTop_toBottomOf="@+id/city_env_title" />
 
     <TextView
         android:id="@+id/collect_title"
-        android:layout_width="350dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/rubik"
         android:gravity="center"
         android:text="@string/collect_title"
-        android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -54,34 +84,19 @@
         app:layout_constraintTop_toBottomOf="@+id/city_env_desc" />
 
     <TextView
-        android:id="@+id/city_desc"
-        android:layout_width="370dp"
+        android:id="@+id/city_collect_text"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:textAlignment="textStart"
+        android:gravity="start"
         android:textColor="#000000"
         android:textSize="12sp"
-        android:textStyle="bold"
+        app:autoSizeTextType="uniform"
         app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_title" />
-
-    <TextView
-        android:id="@+id/city_env_title"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:text="@string/env_title"
-        android:textAlignment="textStart"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/collect_title" />
 
     <ImageView
         android:id="@+id/kiwi_logo"
@@ -105,43 +120,27 @@
 
     <ImageView
         android:id="@+id/city_image"
-        android:layout_width="257dp"
-        android:layout_height="223dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="35dp"
         android:scaleType="fitXY"
         android:src="@drawable/amsterdam_city"
+        app:layout_constraintBottom_toTopOf="@+id/ocLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/back" />
 
     <Button
         android:id="@+id/back"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:background="?attr/selectableItemBackground"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_button"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:text="&lt;"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/city_title"
-        android:layout_width="350dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:textAlignment="textStart"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

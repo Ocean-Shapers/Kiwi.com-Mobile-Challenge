@@ -47,7 +47,7 @@ class OptionsFragment : Fragment() {
             }
         }.start()
         val adapter = ArrayAdapter(
-            activity!!.applicationContext, R.layout.custom_spinner_item, sourceCountries
+            activity!!.applicationContext, android.R.layout.select_dialog_item, sourceCountries
         )
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()

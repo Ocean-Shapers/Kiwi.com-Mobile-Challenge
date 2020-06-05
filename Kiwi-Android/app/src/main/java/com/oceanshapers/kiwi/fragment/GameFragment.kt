@@ -12,7 +12,10 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
@@ -65,10 +68,22 @@ class GameFragment : Fragment() {
     // background map order : Budapest -->Budapest - Vienna - Amsterdam - Paris - London
     override fun onStart() {
         super.onStart()
-        turtleUpSound = MediaPlayer.create(context, resources.getIdentifier("turtle_up","raw",activity!!.packageName))
-        turtledownSound = MediaPlayer.create(context, resources.getIdentifier("turtle_dives","raw",activity!!.packageName))
-        turtleCollectsSound = MediaPlayer.create(context, resources.getIdentifier("turtle_collects_item","raw",activity!!.packageName))
-        gameOverSound = MediaPlayer.create(context, resources.getIdentifier("game_over","raw",activity!!.packageName))
+        turtleUpSound = MediaPlayer.create(
+            context,
+            resources.getIdentifier("turtle_up", "raw", activity!!.packageName)
+        )
+        turtledownSound = MediaPlayer.create(
+            context,
+            resources.getIdentifier("turtle_dives", "raw", activity!!.packageName)
+        )
+        turtleCollectsSound = MediaPlayer.create(
+            context,
+            resources.getIdentifier("turtle_collects_item", "raw", activity!!.packageName)
+        )
+        gameOverSound = MediaPlayer.create(
+            context,
+            resources.getIdentifier("game_over", "raw", activity!!.packageName)
+        )
         arguments?.getString("source")?.let {
             sourceCountryString = it
         }
@@ -83,6 +98,7 @@ class GameFragment : Fragment() {
         )
         val destinationTextArray = resources.getStringArray(R.array.destination_list)
         jump_up_button.setOnClickListener {
+            animateButton(jump_up_button)
             if (!turtleLimitSet) {
                 setTurtleLimits()
             }
@@ -93,11 +109,12 @@ class GameFragment : Fragment() {
             }
         }
         jump_down_button.setOnClickListener {
+            animateButton(jump_down_button)
             if (!turtleLimitSet) {
                 setTurtleLimits()
             }
             if (turtle.y + 240 <= turtleLowerLimit) {
-               turtledownSound.start()
+                turtledownSound.start()
                 turtle.animate().x(turtle.x).y(turtle.y + 240).setDuration(200)
             }
         }
@@ -139,11 +156,18 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
         turtleLowerLimit = displayMetrics.ydpi
-        startAnimation(plastic1, -(displayMetrics.widthPixels * 2).toFloat(), 0, 15000)
-        startAnimation(plastic2, -(displayMetrics.widthPixels * 2).toFloat(), 500, 20000)
-        startAnimation(plastic3, -(displayMetrics.widthPixels * 2).toFloat(), 10000, 15000)
-        startAnimation(plastic4, -(displayMetrics.widthPixels * 2).toFloat(), 15000, 18000)
+        startAnimation(plastic1, -(displayMetrics.widthPixels * 2).toFloat(), 0, 8000)
+        startAnimation(plastic2, -(displayMetrics.widthPixels * 2).toFloat(), 500, 10000)
+        startAnimation(plastic3, -(displayMetrics.widthPixels * 2).toFloat(), 10000, 6000)
+        startAnimation(plastic4, -(displayMetrics.widthPixels * 2).toFloat(), 15000, 11000)
         startCollectibleAnimation()
+    }
+
+    private fun animateButton(buttonToAnimate: Button) {
+        val buttonAnimation = AnimationUtils.loadAnimation(context, R.anim.bounce);
+        val interpolator = CustomBounceInterpolator(0.2, 20.0)
+        buttonAnimation.setInterpolator(interpolator)
+        buttonToAnimate.startAnimation(buttonAnimation)
     }
 
     //Method to limit turtle movement in just three lanes - middle, top and lower.
@@ -173,16 +197,12 @@ class GameFragment : Fragment() {
     }
 
     private fun hideDashboard() {
-        dashboard.visibility = View.INVISIBLE
         dashboard_faires_text.visibility = View.INVISIBLE
-        dashboard_text_header.visibility = View.INVISIBLE
         fare.visibility = View.INVISIBLE
     }
 
     private fun showDashboard() {
-        dashboard.visibility = View.VISIBLE
         dashboard_faires_text.visibility = View.VISIBLE
-        dashboard_text_header.visibility = View.VISIBLE
         fare.visibility = View.VISIBLE
     }
 
@@ -210,11 +230,19 @@ class GameFragment : Fragment() {
             "translationX",
             -(displayMetrics.widthPixels).toFloat()
         )
-        collectibleAnimation.duration = 3000
+        collectibleAnimation.duration = 4000
         collectibleAnimation.repeatCount = ValueAnimator.INFINITE
         collectibleAnimation.startDelay = 0
         collectibleAnimation.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
+                val random = (0..2).random()
+                System.out.println("random : " + random.toString())
+                if (random == 1 && collectible.y - 200 > turtleUpperLimit) {
+                    collectible.y = collectible.y - 200
+                }
+                if (random == 2 && collectible.y + 200 < turtleLowerLimit) {
+                    collectible.y = collectible.y + 200
+                }
                 collectible.visibility = View.VISIBLE
             }
 
@@ -383,6 +411,24 @@ class GameFragment : Fragment() {
             }
             putInt(getString(R.string.SPLastScore), currentSessionScore)
             commit()
+        }
+    }
+
+    internal class CustomBounceInterpolator(
+        amplitude: Double,
+        frequency: Double
+    ) :
+        Interpolator {
+        private var mAmplitude = 1.0
+        private var mFrequency = 10.0
+        override fun getInterpolation(time: Float): Float {
+            return (-1 * Math.pow(Math.E, -time / mAmplitude) *
+                    Math.cos(mFrequency * time) + 1).toFloat()
+        }
+
+        init {
+            mAmplitude = amplitude
+            mFrequency = frequency
         }
     }
 }
