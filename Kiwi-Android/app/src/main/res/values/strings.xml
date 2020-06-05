@@ -32,9 +32,21 @@
         <item>Paris</item>
         <item>London</item>
     </string-array>
+    <string-array name="destination_country_list">
+        <item>Hungary</item>
+        <item>Austria</item>
+        <item>Netherlands</item>
+        <item>France</item>
+        <item>United Kingdom</item>
+    </string-array>
+    <string name="Budapest_country">Hungary</string>
+    <string name="Vienna_country">Austria</string>
+    <string name="Amsterdam_country">Netherlands</string>
+    <string name="Paris_country">France</string>
+    <string name="London_country">United Kingdom</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_source">Select Source</string>
     <string name="my_scores"><b> My Scores</b></string>
     <string name="all_time">All-Time High Score : </string>
     <string name="last_played">Last Played Session :</string>

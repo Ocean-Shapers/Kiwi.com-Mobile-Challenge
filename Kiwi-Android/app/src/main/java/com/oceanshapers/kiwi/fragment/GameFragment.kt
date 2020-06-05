@@ -5,7 +5,6 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -14,42 +13,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
 import com.oceanshapers.kiwi.R
 import com.oceanshapers.kiwi.search.CheapestFlightSearchService
+import com.oceanshapers.kiwi.search.Country
 import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_game.*
-import java.io.IOException
-import java.math.BigDecimal
 import java.util.*
-
-
-/*
-TODO("Add sounds for all user actions")
-TODO("Turtle to only go up or down one step")
-TODO("Clean code and commit")
- */
 
 /**
  * A simple [Fragment] subclass.
  */
 class GameFragment : Fragment() {
     lateinit var plasticAnimation: ObjectAnimator
-    val displayMetrics = DisplayMetrics()
+    lateinit var collectibleAnimation: ObjectAnimator
+    private val displayMetrics = DisplayMetrics()
     var currentSessionScore = 0
     lateinit var budapestVienna: ValueAnimator
     lateinit var viennaAmsterdam: ValueAnimator
     lateinit var amsterdamParis: ValueAnimator
     lateinit var parisLondon: ValueAnimator
-    val gameOverTimer = Timer()
-    val sessionScoreTimer = Timer()
+    private val gameOverTimer = Timer()
+    private val sessionScoreTimer = Timer()
     val handler = Handler()
     lateinit var runnable: Runnable
+    lateinit var sourceCountry: Country
+    lateinit var destinationCountry: Country
     var destinationUnlocked: String = "none"
     lateinit var sourceCountryString: String
     var gameOver = false
+    var turtleUpperLimit = 0.0f
+    var turtleLowerLimit = 0.0f
+    var turtleLimitSet = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,40 +55,47 @@ class GameFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
+
     // background map order : Budapest -->Budapest - Vienna - Amsterdam - Paris - London
     override fun onStart() {
         super.onStart()
+        arguments?.getString("source")?.let {
+            sourceCountryString = it
+        }
+        hideDashboard()
+        showFaresFor(resources.getStringArray(R.array.destination_country_list).get(0))
         gameOver = false
         dashboard_text_header.text = resources.getString(R.string.first_city)
         dashboard_faires_text.text = resources.getString(R.string.fares_from)
-        fare.text = "80" + "\u20ac"
         score_text.text = currentSessionScore.toString()
-        arguments?.getString("arguments")?.let {
-            sourceCountryString = it
-        }
-        val gemImageArray = intArrayOf(
+        val collectibleArray = intArrayOf(
             R.drawable.vienna, R.drawable.amsterdam, R.drawable.paris, R.drawable.london
         )
         val destinationTextArray = resources.getStringArray(R.array.destination_list)
         jump_up_button.setOnClickListener {
-            fish_image.animate().x(fish_image.x).y(fish_image.y - 240).setDuration(200)
+            if (!turtleLimitSet) {
+                setTurtleLimits()
+            }
+            if (turtle.y - 240 >= turtleUpperLimit) {
+                turtle.animate().x(turtle.x).y(turtle.y - 240).setDuration(200)
+            }
         }
         jump_down_button.setOnClickListener {
-            fish_image.animate().x(fish_image.x).y(fish_image.y + 240).setDuration(200)
+            if (!turtleLimitSet) {
+                setTurtleLimits()
+            }
+            if (turtle.y + 240 <= turtleLowerLimit) {
+                turtle.animate().x(turtle.x).y(turtle.y + 240).setDuration(200)
+            }
         }
         gameOverTimer()
         sessionScoreTimer()
         runnable = object : Runnable {
             var i = 0
             override fun run() {
-                if (i > 0) {
-                    destinationUnlocked = destinationTextArray.get(i - 1)
-                } else {
-                    destinationUnlocked = resources.getString(R.string.budapest_city_name)
-                }
-                gemImage.setImageResource(gemImageArray.get(i))
-                //@norby : this is where the async task will be called to get the fare for this city.
-                //findFare(sourceCountryString,gemImageArray.get(i).toString(),fare).execute()
+                showFaresFor(resources.getStringArray(R.array.destination_country_list).get(i))
+                destinationUnlocked = destinationTextArray.get(i)
+                collectible.setImageResource(collectibleArray.get(i))
                 dashboard_text_header.text = destinationTextArray.get(i + 1)
                 i++
                 handler.postDelayed(this, 20000)
@@ -117,7 +121,59 @@ class GameFragment : Fragment() {
             start()
         }
     }
-    fun setAnimationProperties(
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        turtleLowerLimit = displayMetrics.ydpi
+        startAnimation(plastic1, -(displayMetrics.widthPixels * 2).toFloat(), 0, 15000)
+        startAnimation(plastic2, -(displayMetrics.widthPixels * 2).toFloat(), 500, 20000)
+        startAnimation(plastic3, -(displayMetrics.widthPixels * 2).toFloat(), 10000, 15000)
+        startAnimation(plastic4, -(displayMetrics.widthPixels * 2).toFloat(), 15000, 18000)
+        startCollectibleAnimation()
+    }
+
+    //Method to limit turtle movement in just three lanes - middle, top and lower.
+    private fun setTurtleLimits() {
+        turtleLowerLimit = turtle.y + 250.0f
+        turtleUpperLimit = turtle.y - 250.0f
+        turtleLimitSet = true
+    }
+
+    // Method to show fares for all destinations
+    private fun showFaresFor(currentDestination: String) {
+        Thread {
+            sourceCountry =
+                CountrySearchService().searchByString(sourceCountryString).get(0)
+            destinationCountry =
+                CountrySearchService().searchByString(currentDestination).get(0)
+            val cheapestFlight = CheapestFlightSearchService().search(
+                sourceCountry, destinationCountry
+            )
+            activity!!.runOnUiThread {
+                if (cheapestFlight?.price != null) {
+                    fare.text = cheapestFlight?.price.toString() + "\u20ac"
+                    showDashboard()
+                }
+            }
+        }.start()
+    }
+
+    private fun hideDashboard() {
+        dashboard.visibility = View.INVISIBLE
+        dashboard_faires_text.visibility = View.INVISIBLE
+        dashboard_text_header.visibility = View.INVISIBLE
+        fare.visibility = View.INVISIBLE
+    }
+
+    private fun showDashboard() {
+        dashboard.visibility = View.VISIBLE
+        dashboard_faires_text.visibility = View.VISIBLE
+        dashboard_text_header.visibility = View.VISIBLE
+        fare.visibility = View.VISIBLE
+    }
+
+    private fun setAnimationProperties(
         animation: ValueAnimator,
         firstImageView: ImageView,
         followingImageView: ImageView
@@ -134,17 +190,29 @@ class GameFragment : Fragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        startAnimation(plastic1, -(displayMetrics.widthPixels * 2).toFloat(), 0, 15000)
-        startAnimation(plastic2, -(displayMetrics.widthPixels * 2).toFloat(), 500, 20000)
-        startAnimation(plastic3, -(displayMetrics.widthPixels * 2).toFloat(), 10000, 15000)
-        startAnimation(plastic4, -(displayMetrics.widthPixels * 2).toFloat(), 15000, 18000)
-        startAnimation(gemImage, -(displayMetrics.widthPixels).toFloat(), 0, 3000)
+    //Method to animate collectible.
+    private fun startCollectibleAnimation() {
+        collectibleAnimation = ObjectAnimator.ofFloat(
+            collectible,
+            "translationX",
+            -(displayMetrics.widthPixels).toFloat()
+        )
+        collectibleAnimation.duration = 3000
+        collectibleAnimation.repeatCount = ValueAnimator.INFINITE
+        collectibleAnimation.startDelay = 0
+        collectibleAnimation.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {
+                collectible.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator?) {}
+        })
+        collectibleAnimation.start()
     }
 
-    fun startAnimation(
+    private fun startAnimation(
         plastic: ImageView,
         transitionTo: Float,
         delay: Long,
@@ -156,8 +224,9 @@ class GameFragment : Fragment() {
         plasticAnimation.startDelay = delay
         plasticAnimation.start()
     }
+
     //Method to detect game over if turtle collides with plastic
-    fun gameOverTimer() {
+    private fun gameOverTimer() {
         gameOverTimer.schedule(object : TimerTask() {
             override fun run() {
                 activity!!.runOnUiThread {
@@ -184,6 +253,7 @@ class GameFragment : Fragment() {
         amsterdamParis.cancel()
         parisLondon.cancel()
         plasticAnimation.cancel()
+
     }
 
     fun stopTimers() {
@@ -203,14 +273,17 @@ class GameFragment : Fragment() {
         plastic2.visibility = View.GONE
         plastic3.visibility = View.GONE
         plastic4.visibility = View.GONE
-        gemImage.visibility = View.GONE
+        collectible.visibility = View.GONE
+        collectibleAnimation.cancel()
     }
+
     // Method to keep track of user score when turtle collides with the gems.
-    fun sessionScoreTimer() {
+    private fun sessionScoreTimer() {
         sessionScoreTimer.schedule(object : TimerTask() {
             override fun run() {
                 activity!!.runOnUiThread {
-                    if (detectCollisionWith(gemImage)) {
+                    if (detectCollisionWith(collectible)) {
+                        collectible.visibility = View.INVISIBLE
                         currentSessionScore = currentSessionScore + 5
                         score_text.text = currentSessionScore.toString()
                     }
@@ -221,7 +294,7 @@ class GameFragment : Fragment() {
 
     // Need this method to navigate to the scores page 2000 milliseconds after turtle reaches last city - London
     // That means user has completed the game.
-    val gameWinListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
+    private val gameWinListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
         override fun onAnimationRepeat(animation: Animator?) {}
         override fun onAnimationEnd(animation: Animator?) {
             //User has won the game so show game win and stop all plastic animations and navigate
@@ -229,6 +302,7 @@ class GameFragment : Fragment() {
             handler.postDelayed(
                 {
                     if (!gameOver) {
+                        destinationUnlocked = resources.getString(R.string.london_city_name)
                         stopTimers()
                         gameStatus.setBackgroundResource(R.drawable.win)
                         gameStatus.visibility = View.VISIBLE
@@ -249,7 +323,12 @@ class GameFragment : Fragment() {
         val fragmentUtil = FragmentUtil()
         val fragmentManager = activity!!.supportFragmentManager
         handler.postDelayed({
-            fragmentUtil.replaceFragmentWith(ScoresFragment(), fragmentManager, destinationUnlocked)
+            fragmentUtil.replaceFragmentWith(
+                ScoresFragment(),
+                fragmentManager,
+                source = sourceCountryString,
+                lastVisited = destinationUnlocked
+            )
         }, 2000)
     }
 
@@ -258,9 +337,9 @@ class GameFragment : Fragment() {
         var collisionDetected = false
         //Need to adjust the cordinates since the image doesnot fill up the entire view so collision
         //would happen even when it looks like the turtle is away from the object.
-        val actualFishX = fish_image.x + 100
-        val actualFishY = fish_image.y + 200
-        val actualFishWidth = fish_image.width / 2 - 150
+        val actualFishX = turtle.x + 100
+        val actualFishY = turtle.y + 200
+        val actualFishWidth = turtle.width / 2 - 150
         val actualObjectHeight = objectToCollideWith.height / 2 - 350
         //Logic to determine if a plastic or gem collided with the fish
         if ((objectToCollideWith.x < actualFishX) && (actualFishX < objectToCollideWith.x + objectToCollideWith.width) &&
@@ -289,41 +368,6 @@ class GameFragment : Fragment() {
             }
             putInt(getString(R.string.SPLastScore), currentSessionScore)
             commit()
-        }
-    }
-
-    /*
-        Async task to interact with kiwi api to get cheapest flight.
-     */
-    private class findFare(sourceCountry: String, destinationCountry: String, textView: TextView) :
-        AsyncTask<Void, Void, Void>() {
-        var sourceCountryString = sourceCountry
-        var destinationCountryString = destinationCountry
-        var cheapestFare: BigDecimal = BigDecimal.ZERO
-        var textViewToUpdate = textView
-
-        override fun doInBackground(vararg params: Void?): Void? {
-            try {
-                //get country object for both source and destination
-                val sourceCountryObject = CountrySearchService().searchByString("Germany")
-                val destinationCountryObject = CountrySearchService().searchByString("Hungary")
-                System.out.println("DEBUG : sourceCountryObject : " + sourceCountryObject)
-                System.out.println("DEBUG : destinationCountryObject : " + destinationCountryObject)
-                val cheapestFlight = CheapestFlightSearchService().search(
-                    sourceCountryObject.get(0),
-                    destinationCountryObject.get(0)
-                )
-                // cheapestFare = cheapestFlight!!.price
-                System.out.println("DEBUG : cheapestFare : " + cheapestFlight)
-            } catch (exception: IOException) {
-                exception.printStackTrace()
-            }
-            return null
-        }
-
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-            textViewToUpdate.text = cheapestFare.toString() + "\u20ac"
         }
     }
 }

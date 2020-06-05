@@ -27,15 +27,24 @@ class ScoresFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         var lastVisited = resources.getString(R.string.budapest_city_name)
-        arguments?.getString("arguments")?.let {
+        var destination = resources.getString(R.string.budapest_city_name)
+        var sourceCountry = resources.getString(R.string.budapest_city_name)
+        arguments?.getString("lastVisited")?.let {
             lastVisited = it
         }
-        val noOfCitiesVisited = resources.getStringArray(R.array.destination_list).indexOf(lastVisited) + 1
+        arguments?.getString("source")?.let {
+            sourceCountry = it
+        }
+//        arguments?.getString("destination")?.let {
+//            destination = it
+//        }
+        val noOfCitiesVisited =
+            resources.getStringArray(R.array.destination_list).indexOf(lastVisited) + 1
         val sharedPreference = activity!!.getPreferences(Context.MODE_PRIVATE)
         val gems = sharedPreference.getInt(resources.getString(R.string.SPLastScore), 0) / 5
         val destinationImages =
             arrayOf(budapest_image, vienna_image, amsterdam_image, paris_image, london_image)
-        unlockDestinations(destinationImages, noOfCitiesVisited)
+        unlockDestinations(destinationImages, noOfCitiesVisited, sourceCountry, lastVisited)
         main_text_2_3.text =
             resources.getString(R.string.main_text_2) + " " + noOfCitiesVisited + " " + resources.getString(
                 R.string.main_text_3
@@ -45,7 +54,9 @@ class ScoresFragment : Fragment() {
 
     fun unlockDestinations(
         listOfImages: Array<ImageView>,
-        noOfCitiesVisited: Int
+        noOfCitiesVisited: Int,
+        sourceCountry: String,
+        lastVisited:String
     ) {
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()
@@ -60,7 +71,9 @@ class ScoresFragment : Fragment() {
                 fragmentUtil.replaceFragmentWith(
                     AboutCityFragment(),
                     fragmentManager,
-                   resources.getStringArray(R.array.destination_list).get(i)
+                    destination = resources.getStringArray(R.array.destination_list).get(i),
+                    source = sourceCountry,
+                    lastVisited = lastVisited
                 )
             }
         }

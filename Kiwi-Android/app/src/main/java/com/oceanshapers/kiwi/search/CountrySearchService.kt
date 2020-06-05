@@ -36,4 +36,26 @@ class CountrySearchService {
 
         return countryResultList
     }
+
+    fun searchAllCountries (): List<Country> {
+        val response = khttp.get(COUNTRY_SOURCE_URL)
+        val countryResultList: List<Country>
+
+        if (STATUS_CODE_OK !== response.statusCode) {
+            countryResultList = emptyList()
+        } else {
+            val countryJsonArray = response.jsonArray
+            countryResultList = IntStream.range(0, countryJsonArray.length())
+                .mapToObj { index -> countryJsonArray.getJSONObject(index) }
+                .map { countryJsonObject ->
+                    Country(
+                        countryJsonObject.getString(COUNTRY_NAME_KEY),
+                        countryJsonObject.getString(COUNTRY_CODE_KEY)
+                    )
+                }
+                .collect(Collectors.toList())
+        }
+
+        return countryResultList
+    }
 }

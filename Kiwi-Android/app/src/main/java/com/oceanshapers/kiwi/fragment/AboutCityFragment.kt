@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
 import com.oceanshapers.kiwi.R
+import com.oceanshapers.kiwi.search.CheapestFlightSearchService
+import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_about_city.*
+import kotlinx.android.synthetic.main.fragment_game.*
 
 /**
  * A simple [Fragment] subclass.
@@ -27,31 +30,50 @@ class AboutCityFragment : Fragment() {
         super.onStart()
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()
-        var city = resources.getString(R.string.budapest_city_name)
-        arguments?.getString("arguments")?.let {
-            city = it
+        var destinationCity = resources.getString(R.string.budapest_city_name)
+        arguments?.getString("destination")?.let {
+            destinationCity = it
         }
-        back.setOnClickListener{
+        var source = resources.getString(R.string.budapest_city_name)
+        arguments?.getString("source")?.let {
+            source = it
+        }
+        var lastVisited = resources.getString(R.string.budapest_city_name)
+        arguments?.getString("lastVisited")?.let {
+            lastVisited = it
+        }
+       back.setOnClickListener{
             fragmentUtil.replaceFragmentWith(
                 ScoresFragment(),
                 fragmentManager,
-                city
+                destination = destinationCity,
+                source = source,
+                lastVisited = lastVisited
             )
         }
-        var source : String? = "dummyCountry"
+
         val sharedPreference = activity!!.getPreferences(Context.MODE_PRIVATE)
-        if (sharedPreference != null) {
-           source = sharedPreference.getString("source", "UK")
-        }
-        val imageResourceName = city.toString().toLowerCase() + "_city"
+        val imageResourceName = destinationCity.toString().toLowerCase() + "_city"
         val id = resources.getIdentifier(imageResourceName,"drawable", activity!!.packageName)
         city_image.setImageResource(id)
-        city_title.text = city + " " +resources.getString(R.string.city_title)
-        city_desc.text = resources.getString(resources.getIdentifier(city+"_tourism","string",activity!!.packageName))
-        city_env_desc.text = resources.getString(resources.getIdentifier(city+"_env","string",activity!!.packageName))
-        city_collect_text.text = resources.getString(resources.getIdentifier(city+"_collect","string",activity!!.packageName))
-        visit_text.text = resources.getString(R.string.visit) + " " + city + " " + resources.getString(R.string.from) + " " + source
-        fares_text.text = resources.getString(R.string.fares_from) + "\n" + "45 EUR"
+        city_title.text = destinationCity + " " +resources.getString(R.string.city_title)
+        city_desc.text = resources.getString(resources.getIdentifier(destinationCity+"_tourism","string",activity!!.packageName))
+        city_env_desc.text = resources.getString(resources.getIdentifier(destinationCity+"_env","string",activity!!.packageName))
+        city_collect_text.text = resources.getString(resources.getIdentifier(destinationCity+"_collect","string",activity!!.packageName))
+        visit_text.text = resources.getString(R.string.visit) + " " + destinationCity + " " + resources.getString(R.string.from) + " " + source
+        Thread {
+            val sourceCountry =
+                CountrySearchService().searchByString(source).get(0)
+            val destinationCountry =
+                CountrySearchService().searchByString(resources.getString(resources.getIdentifier(destinationCity+"_country","string",activity!!.packageName))).get(0)
+            val cheapestFlight = CheapestFlightSearchService().search(
+                sourceCountry, destinationCountry
+            )
+            activity!!.runOnUiThread {
+                fares_text.visibility = View.VISIBLE
+                fares_text.text = resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
+            }
+        }.start()
     }
 
 }

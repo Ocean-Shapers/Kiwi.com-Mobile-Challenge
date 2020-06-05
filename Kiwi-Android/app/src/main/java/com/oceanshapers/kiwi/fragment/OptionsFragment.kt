@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
 import com.oceanshapers.kiwi.R
+import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_options.*
 
 /**
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_options.*
 class OptionsFragment : Fragment() {
     var lastSessionScore = 0
     var allTimeHighScore = 0
-    lateinit var destinationSelected: String
+    lateinit var sourceSelected: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +37,16 @@ class OptionsFragment : Fragment() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val destinations = resources.getStringArray(R.array.city_list)
+        var sourceCountries: MutableList<String> = mutableListOf<String>()
+        sourceCountries.add(resources.getString(R.string.select_source))
+        Thread {
+            val countries = CountrySearchService().searchAllCountries()
+            for (i in 0..(countries.size - 1)) {
+                sourceCountries.add(countries.get(i).name)
+            }
+        }.start()
         val adapter = ArrayAdapter(
-            activity!!.applicationContext, R.layout.custom_spinner_item, destinations
+            activity!!.applicationContext, R.layout.custom_spinner_item, sourceCountries
         )
         val fragmentManager = activity!!.supportFragmentManager
         val fragmentUtil = FragmentUtil()
@@ -48,26 +56,33 @@ class OptionsFragment : Fragment() {
             lastSessionScore = sharedPreference.getInt(resources.getString(R.string.SPLastScore), 0)
         }
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        destinationsSpinner.adapter = adapter
-        destinationsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        sourceSpinner.adapter = adapter
+        sourceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                destinationSelected = destinationsSpinner.selectedItem.toString()
+                sourceSelected = sourceSpinner.selectedItem.toString()
+
             }
         }
         session_score.text = resources.getString(R.string.last_played) + " " + lastSessionScore
         high_score.text = resources.getString(R.string.all_time) + " " + allTimeHighScore
         start_game.setOnClickListener {
-            fragmentUtil.replaceFragmentWith(
-                GameFragment(),
-                fragmentManager,
-                arguments = destinationSelected
-            )
+            if (sourceSelected == resources.getString(R.string.select_source)){
+                Toast.makeText(context, "Please select source country from dropdown on the left", Toast.LENGTH_SHORT).show()
+            } else {
+                fragmentUtil.replaceFragmentWith(
+                    GameFragment(),
+                    fragmentManager,
+                    source = sourceSelected
+                )
+            }
         }
     }
 }

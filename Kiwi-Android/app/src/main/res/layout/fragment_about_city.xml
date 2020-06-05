@@ -172,6 +172,7 @@
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/visit_text" />
 
