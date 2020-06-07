@@ -39,6 +39,13 @@
         <item>France</item>
         <item>United Kingdom</item>
     </string-array>
+    <string-array name="destination_country_code_list">
+        <item>HU</item>
+        <item>AT</item>
+        <item>NL</item>
+        <item>FR</item>
+        <item>GB</item>
+    </string-array>
     <string name="Budapest_country">Hungary</string>
     <string name="Vienna_country">Austria</string>
     <string name="Amsterdam_country">Netherlands</string>

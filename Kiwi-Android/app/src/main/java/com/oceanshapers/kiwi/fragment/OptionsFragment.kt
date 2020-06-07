@@ -11,8 +11,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.autonet.novid20.helper.FragmentUtil
+import com.oceanshapers.kiwi.util.FragmentUtil
 import com.oceanshapers.kiwi.R
+import com.oceanshapers.kiwi.search.Country
 import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_options.*
 
@@ -22,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_options.*
 class OptionsFragment : Fragment() {
     var lastSessionScore = 0
     var allTimeHighScore = 0
-    lateinit var sourceSelected: String
+    lateinit var sourceSelected: Country
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,16 +40,16 @@ class OptionsFragment : Fragment() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var sourceCountries: MutableList<String> = mutableListOf<String>()
-        sourceCountries.add(resources.getString(R.string.select_source))
-        sourceCountries.add("Loading countries ...")
+        var sourceCountries: MutableList<Country> = mutableListOf<Country>()
+        sourceCountries.add(Country(resources.getString(R.string.select_source), "select"))
+        val element = Country("Loading countries ...", "loading")
+        sourceCountries.add(element)
         Thread {
             val countries = CountrySearchService().searchAllCountries()
-            sourceCountries.remove("Loading countries ...")
+            sourceCountries.remove(element)
             for (i in 0..(countries.size - 1)) {
-                sourceCountries.add(countries.get(i).name)
+                sourceCountries.add(countries.get(i))
             }
-            //}
         }.start()
         val adapter = ArrayAdapter(
             activity!!.applicationContext, R.layout.custom_spinner_item, sourceCountries
@@ -72,14 +73,14 @@ class OptionsFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                sourceSelected = sourceSpinner.selectedItem.toString()
+                sourceSelected = sourceSpinner.selectedItem as Country
 
             }
         }
         session_score.text = resources.getString(R.string.last_played) + " " + lastSessionScore
         high_score.text = resources.getString(R.string.all_time) + " " + allTimeHighScore
         start_game.setOnClickListener {
-            if (sourceSelected == resources.getString(R.string.select_source)) {
+            if (sourceSelected.name == resources.getString(R.string.select_source)) {
                 Toast.makeText(
                     context,
                     "Please select source country from dropdown on the left",

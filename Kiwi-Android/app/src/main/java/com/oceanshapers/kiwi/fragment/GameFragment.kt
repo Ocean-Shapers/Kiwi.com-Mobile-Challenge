@@ -18,13 +18,15 @@ import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.autonet.novid20.helper.FragmentUtil
+import com.oceanshapers.kiwi.util.FragmentUtil
 import com.oceanshapers.kiwi.R
+import com.oceanshapers.kiwi.search.CheapestFlight
 import com.oceanshapers.kiwi.search.CheapestFlightSearchService
 import com.oceanshapers.kiwi.search.Country
-import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_game.*
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -46,7 +48,6 @@ class GameFragment : Fragment() {
     lateinit var sourceCountry: Country
     lateinit var destinationCountry: Country
     var destinationUnlocked: String = "none"
-    lateinit var sourceCountryString: String
     var gameOver = false
     var turtleUpperLimit = 0.0f
     var turtleLowerLimit = 0.0f
@@ -55,12 +56,40 @@ class GameFragment : Fragment() {
     lateinit var turtledownSound: MediaPlayer
     lateinit var turtleCollectsSound: MediaPlayer
     lateinit var gameOverSound: MediaPlayer
+    var destinationCountries: ArrayList<Country> = ArrayList()
+    var cheapestFlights: HashMap<Country, CheapestFlight?> = HashMap()
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        arguments?.getSerializable("source")?.let {
+            sourceCountry = it as Country
+        }
+        val countryNames = resources.getStringArray(R.array.destination_country_list)
+        val countryCodes = resources.getStringArray(R.array.destination_country_code_list)
+        for (i in countryNames.indices) {
+            destinationCountries.add(Country(countryNames[i], countryCodes[i]))
+        }
+
+        val thread = Thread {
+            val firatDestinationCountry = destinationCountries.first()
+            cheapestFlights[firatDestinationCountry] =
+                CheapestFlightSearchService().search(sourceCountry, firatDestinationCountry)
+        }
+        thread.start()
+        thread.join()
+
+        for (i in 1 until destinationCountries.size) {
+            Thread {
+                val nextDestinationCountry = destinationCountries[i]
+                cheapestFlights[nextDestinationCountry] =
+                    CheapestFlightSearchService().search(sourceCountry, nextDestinationCountry)
+            }.start()
+        }
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
@@ -68,6 +97,8 @@ class GameFragment : Fragment() {
     // background map order : Budapest -->Budapest - Vienna - Amsterdam - Paris - London
     override fun onStart() {
         super.onStart()
+
+
         turtleUpSound = MediaPlayer.create(
             context,
             resources.getIdentifier("turtle_up", "raw", activity!!.packageName)
@@ -84,11 +115,8 @@ class GameFragment : Fragment() {
             context,
             resources.getIdentifier("game_over", "raw", activity!!.packageName)
         )
-        arguments?.getString("source")?.let {
-            sourceCountryString = it
-        }
         hideDashboard()
-        showFaresFor(resources.getStringArray(R.array.destination_country_list).get(0))
+        showFaresFor(destinationCountries.first())
         gameOver = false
         dashboard_text_header.text = resources.getString(R.string.first_city)
         dashboard_faires_text.text = resources.getString(R.string.fares_from)
@@ -124,7 +152,7 @@ class GameFragment : Fragment() {
         runnable = object : Runnable {
             var i = 0
             override fun run() {
-                showFaresFor(resources.getStringArray(R.array.destination_country_list).get(i + 1))
+                showFaresFor(destinationCountries[i + 1])
                 destinationUnlocked = destinationTextArray.get(i)
                 collectible.setImageResource(collectibleArray.get(i))
                 dashboard_text_header.text = destinationTextArray.get(i + 1)
@@ -190,22 +218,19 @@ class GameFragment : Fragment() {
     }
 
     // Method to show fares for all destinations
-    private fun showFaresFor(currentDestination: String) {
-        Thread {
-            sourceCountry =
-                CountrySearchService().searchByString(sourceCountryString).get(0)
-            destinationCountry =
-                CountrySearchService().searchByString(currentDestination).get(0)
-            val cheapestFlight = CheapestFlightSearchService().search(
-                sourceCountry, destinationCountry
-            )
+    private fun showFaresFor(currentDestination: Country) {
+            destinationCountry = currentDestination
+            val cheapestFlight = cheapestFlights[destinationCountry]
             activity!!.runOnUiThread {
                 if (cheapestFlight?.price != null && fare != null) {
-                    fare.text = cheapestFlight?.price.toString() + "\u20ac"
+                    if(!currentDestination.countryCode.equals(sourceCountry.countryCode)) {
+                        fare.text = cheapestFlight?.price.toString() + "\u20ac"
+                    }
                     showDashboard()
+                } else {
+                    hideDashboard()
                 }
             }
-        }.start()
     }
 
     private fun hideDashboard() {
@@ -403,8 +428,9 @@ class GameFragment : Fragment() {
             fragmentUtil.replaceFragmentWith(
                 ScoresFragment(),
                 fragmentManager,
-                source = sourceCountryString,
-                lastVisited = destinationUnlocked
+                source = sourceCountry,
+                lastVisited = destinationUnlocked,
+                cheapestFlightsMap = cheapestFlights
             )
         }, 2000)
     }

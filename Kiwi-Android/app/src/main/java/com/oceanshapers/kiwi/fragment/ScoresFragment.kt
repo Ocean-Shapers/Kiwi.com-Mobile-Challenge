@@ -9,9 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import com.autonet.novid20.helper.FragmentUtil
+import com.oceanshapers.kiwi.util.FragmentUtil
 import com.oceanshapers.kiwi.R
-import kotlinx.android.synthetic.main.fragment_options.*
+import com.oceanshapers.kiwi.search.CheapestFlight
+import com.oceanshapers.kiwi.search.Country
 import kotlinx.android.synthetic.main.fragment_scores.*
 
 /**
@@ -19,10 +20,14 @@ import kotlinx.android.synthetic.main.fragment_scores.*
  */
 class ScoresFragment : Fragment() {
     lateinit var mediaPlayer: MediaPlayer
+    lateinit var cheapestFlightsMap: HashMap<Country, CheapestFlight?>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        arguments?.getSerializable("cheapestFlights")?.let {
+            cheapestFlightsMap = it as HashMap<Country, CheapestFlight?>
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_scores, container, false)
     }
@@ -30,12 +35,12 @@ class ScoresFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         var lastVisited = resources.getString(R.string.budapest_city_name)
-        var sourceCountry = resources.getString(R.string.budapest_city_name)
+        var sourceCountry = Country(resources.getString(R.string.budapest_city_name), "HU")
         arguments?.getString("lastVisited")?.let {
             lastVisited = it
         }
-        arguments?.getString("source")?.let {
-            sourceCountry = it
+        arguments?.getSerializable("source")?.let {
+            sourceCountry = it as Country
         }
         val noOfCitiesVisited =
             resources.getStringArray(R.array.destination_list).indexOf(lastVisited) + 1
@@ -54,7 +59,7 @@ class ScoresFragment : Fragment() {
     fun unlockDestinations(
         listOfImages: Array<ImageView>,
         noOfCitiesVisited: Int,
-        sourceCountry: String,
+        sourceCountry: Country,
         lastVisited:String
     ) {
         val fragmentManager = activity!!.supportFragmentManager
@@ -77,7 +82,8 @@ class ScoresFragment : Fragment() {
                     fragmentManager,
                     destination = resources.getStringArray(R.array.destination_list).get(i),
                     source = sourceCountry,
-                    lastVisited = lastVisited
+                    lastVisited = lastVisited,
+                    cheapestFlightsMap = cheapestFlightsMap
                 )
             }
         }

@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.autonet.novid20.helper.FragmentUtil
+import com.oceanshapers.kiwi.util.FragmentUtil
 import com.oceanshapers.kiwi.R
-import com.oceanshapers.kiwi.search.CheapestFlightSearchService
-import com.oceanshapers.kiwi.search.CountrySearchService
+import com.oceanshapers.kiwi.search.CheapestFlight
+import com.oceanshapers.kiwi.search.Country
 import kotlinx.android.synthetic.main.fragment_about_city.*
 
 /**
@@ -17,10 +17,15 @@ import kotlinx.android.synthetic.main.fragment_about_city.*
  */
 class AboutCityFragment : Fragment() {
     lateinit var mediaPlayer: MediaPlayer
+    lateinit var cheapestFlightsMap: HashMap<Country, CheapestFlight?>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        arguments?.getSerializable("cheapestFlights")?.let {
+            cheapestFlightsMap = it as HashMap<Country, CheapestFlight?>
+        }
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about_city, container, false)
     }
@@ -33,9 +38,9 @@ class AboutCityFragment : Fragment() {
         arguments?.getString("destination")?.let {
             destinationCity = it
         }
-        var source = resources.getString(R.string.budapest_city_name)
-        arguments?.getString("source")?.let {
-            source = it
+        var source = Country(resources.getString(R.string.budapest_city_name), "HU")
+        arguments?.getSerializable("source")?.let {
+            source = it as Country
         }
         var lastVisited = resources.getString(R.string.budapest_city_name)
         arguments?.getString("lastVisited")?.let {
@@ -53,7 +58,8 @@ class AboutCityFragment : Fragment() {
                 fragmentManager,
                 destination = destinationCity,
                 source = source,
-                lastVisited = lastVisited
+                lastVisited = lastVisited,
+                cheapestFlightsMap = cheapestFlightsMap
             )
         }
         val imageResourceName = destinationCity.toString().toLowerCase() + "_city"
@@ -85,31 +91,27 @@ class AboutCityFragment : Fragment() {
             resources.getString(R.string.visit) + " " + destinationCity + " " + resources.getString(
                 R.string.from
             ) + " " + source
-        Thread {
-            val sourceCountry =
-                CountrySearchService().searchByString(source).get(0)
-            val destinationCountry =
-                CountrySearchService().searchByString(
-                    resources.getString(
-                        resources.getIdentifier(
-                            destinationCity + "_country",
-                            "string",
-                            activity!!.packageName
-                        )
-                    )
-                ).get(0)
-            val cheapestFlight = CheapestFlightSearchService().search(
-                sourceCountry, destinationCountry
+        val destinationCountryCode = resources.getString(
+            resources.getIdentifier(
+                destinationCity + "_country",
+                "string",
+                activity!!.packageName
             )
-            activity!!.runOnUiThread {
-                if (fares_text != null && cheapestFlight?.price != null) {
-                    visit_text.visibility = View.VISIBLE
-                    fares_text.visibility = View.VISIBLE
-                    fares_text.text =
-                        resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
-                }
+        )
+        val cheapestFlight = cheapestFlightsMap.entries.filter { mutableEntry ->
+            mutableEntry.key.name == destinationCountryCode
+        }
+            .map { mutableEntry -> mutableEntry.value }
+            .firstOrNull()
+
+        activity!!.runOnUiThread {
+            if (fares_text != null && cheapestFlight?.price != null) {
+                visit_text.visibility = View.VISIBLE
+                fares_text.visibility = View.VISIBLE
+                fares_text.text =
+                    resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
             }
-        }.start()
+        }
     }
 
     private fun stopPreviousAudio() {
