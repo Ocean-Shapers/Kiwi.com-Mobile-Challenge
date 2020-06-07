@@ -28,6 +28,8 @@ app-release-1.0.apk which is next to the README.md
 Android studio
 
 ## Used APIs and SDKs
+[KIWI FLIGHT API](https://docs.kiwi.com/#header-searching-for-a-flight-example) - Flight search API of KIWI
+
 [REST COUNTRIES](https://restcountries.eu) - Get information about countries via a RESTful API
 
 
