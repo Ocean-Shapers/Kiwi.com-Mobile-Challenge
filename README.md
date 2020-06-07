@@ -1,11 +1,7 @@
 # Kiwi.com-Mobile-Challenge
 
 ## Introduction video on Youtube
-<iframe width="560" height="315"
-src="http://www.youtube.com/watch?v=jmA7Me44P9Y" 
-frameborder="0" 
-allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/jmA7Me44P9Y/0.jpg)](http://www.youtube.com/watch?v=jmA7Me44P9Y)
 
 ## The Ocean Shapers – Kiwi Mobile App
 The Ocean Shapers – Kiwi Mobile App aims to combine the joy of travelling to new countries, obtaining a glimpse into different cultures, and earning special Kiwi flight deals, within the bigger frame of raising awareness for protecting our oceans and rivers from plastic pollution. Our proposed game for Kiwi.com takes the players on a journey around some of the major European flight destinations. After players select their home country at the beginning of the game, they learn about popular sights of selected European destinations through the eyes of the Ocean Shapers Turtle. While progressing through the Danube, Rhine, Seine and Thames rivers, players can unlock new destinations and discover Kiwi.com flight deals during their journey. The game is also built around the concept of raising awareness of environment protection, so the players need to avoid plastic objects as they cross the European rivers, and they can also learn about various environment protection initiatives of the selected travel destinations after progressing through the map in the game.
