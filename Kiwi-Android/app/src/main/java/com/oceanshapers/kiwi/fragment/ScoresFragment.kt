@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.autonet.novid20.helper.FragmentUtil
 import com.oceanshapers.kiwi.R
+import kotlinx.android.synthetic.main.fragment_options.*
 import kotlinx.android.synthetic.main.fragment_scores.*
 
 /**
@@ -79,6 +80,12 @@ class ScoresFragment : Fragment() {
                     lastVisited = lastVisited
                 )
             }
+        }
+        back_to_game.setOnClickListener {
+            fragmentUtil.replaceFragmentWith(
+                OptionsFragment(),
+                fragmentManager
+            )
         }
     }
     private fun stopPreviousAudio()

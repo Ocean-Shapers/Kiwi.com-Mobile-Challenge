@@ -7,96 +7,93 @@
     android:background="@mipmap/background"
     tools:context=".fragment.ScoresFragment">
 
-    <TextView
-        android:id="@+id/city_title"
-        android:layout_width="400dp"
-        android:layout_height="30dp"
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/visit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/city_desc"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="start"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_title" />
+        <TextView
+            android:id="@+id/city_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/city_env_title"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:text="@string/env_title"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_desc" />
+        <TextView
+            android:id="@+id/city_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/city_title"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="start"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:autoSizeTextType="uniform" />
 
-    <TextView
-        android:id="@+id/city_env_desc"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/rubik"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        android:gravity="start"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_env_title" />
+        <TextView
+            android:id="@+id/city_env_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city_desc"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/env_title"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/collect_title"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="center"
-        android:text="@string/collect_title"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/city_env_desc" />
+        <TextView
+            android:id="@+id/city_env_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city_env_title"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="start"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:autoSizeTextType="uniform" />
 
-    <TextView
-        android:id="@+id/city_collect_text"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/rubik"
-        android:gravity="start"
-        android:textColor="#000000"
-        android:textSize="12sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintStart_toEndOf="@+id/city_image"
-        app:layout_constraintTop_toBottomOf="@+id/collect_title" />
+        <TextView
+            android:id="@+id/collect_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city_env_desc"
+            android:layout_alignParentLeft="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="center"
+            android:text="@string/collect_title"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/city_collect_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/collect_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/rubik"
+            android:gravity="start"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:autoSizeTextType="uniform" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/kiwi_logo"
@@ -154,6 +151,7 @@
         android:textColor="#000000"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ocLogo" />
 

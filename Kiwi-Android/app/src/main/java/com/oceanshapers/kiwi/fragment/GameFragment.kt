@@ -103,9 +103,9 @@ class GameFragment : Fragment() {
                 setTurtleLimits()
             }
             if (turtle.y - 240 >= turtleUpperLimit) {
-
                 turtleUpSound.start()
-                turtle.animate().x(turtle.x).y(turtle.y - 240).setDuration(200)
+                turtle.animate().x(turtle.x).y(turtle.y - 240)
+                turtle.animate().setListener(turtleListener)
             }
         }
         jump_down_button.setOnClickListener {
@@ -115,7 +115,8 @@ class GameFragment : Fragment() {
             }
             if (turtle.y + 240 <= turtleLowerLimit) {
                 turtledownSound.start()
-                turtle.animate().x(turtle.x).y(turtle.y + 240).setDuration(200)
+                turtle.animate().x(turtle.x).y(turtle.y + 240)
+                turtle.animate().setListener(turtleListener)
             }
         }
         gameOverTimer()
@@ -123,7 +124,7 @@ class GameFragment : Fragment() {
         runnable = object : Runnable {
             var i = 0
             override fun run() {
-                showFaresFor(resources.getStringArray(R.array.destination_country_list).get(i))
+                showFaresFor(resources.getStringArray(R.array.destination_country_list).get(i + 1))
                 destinationUnlocked = destinationTextArray.get(i)
                 collectible.setImageResource(collectibleArray.get(i))
                 dashboard_text_header.text = destinationTextArray.get(i + 1)
@@ -170,6 +171,17 @@ class GameFragment : Fragment() {
         buttonToAnimate.startAnimation(buttonAnimation)
     }
 
+
+    private fun lockButton(buttonToLock: Button) {
+        buttonToLock.isClickable = false
+        buttonToLock.isEnabled = false
+    }
+
+    private fun unlockButton(buttonToUnlock: Button) {
+        buttonToUnlock.isClickable = true
+        buttonToUnlock.isEnabled = true
+    }
+
     //Method to limit turtle movement in just three lanes - middle, top and lower.
     private fun setTurtleLimits() {
         turtleLowerLimit = turtle.y + 250.0f
@@ -188,7 +200,7 @@ class GameFragment : Fragment() {
                 sourceCountry, destinationCountry
             )
             activity!!.runOnUiThread {
-                if (cheapestFlight?.price != null && fare !=null) {
+                if (cheapestFlight?.price != null && fare != null) {
                     fare.text = cheapestFlight?.price.toString() + "\u20ac"
                     showDashboard()
                 }
@@ -289,13 +301,13 @@ class GameFragment : Fragment() {
         }, 0, 10) // Delay of 5 milliseconds for user to get a hang of all game components
     }
 
-    fun disableButtonsOnGameEnd()
-    {
+    fun disableButtonsOnGameEnd() {
         jump_up_button.isEnabled = false
         jump_up_button.isClickable = false
         jump_down_button.isClickable = false
         jump_down_button.isEnabled = false
     }
+
     fun stopbackgroundAnimations() {
         budapestVienna.cancel()
         viennaAmsterdam.cancel()
@@ -367,6 +379,20 @@ class GameFragment : Fragment() {
 
         override fun onAnimationCancel(animation: Animator?) {}
         override fun onAnimationStart(animation: Animator?) {}
+    }
+
+    private val turtleListener: Animator.AnimatorListener = object : Animator.AnimatorListener {
+        override fun onAnimationRepeat(animation: Animator?) {}
+        override fun onAnimationEnd(animation: Animator?) {
+            unlockButton(jump_down_button)
+            unlockButton(jump_up_button)
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {}
+        override fun onAnimationStart(animation: Animator?) {
+            lockButton(jump_up_button)
+            lockButton(jump_down_button)
+        }
     }
 
     // Post game over or game win navigate to scores page after 2000milliseconds.

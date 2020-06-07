@@ -1,6 +1,5 @@
 package com.oceanshapers.kiwi.fragment
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import com.oceanshapers.kiwi.R
 import com.oceanshapers.kiwi.search.CheapestFlightSearchService
 import com.oceanshapers.kiwi.search.CountrySearchService
 import kotlinx.android.synthetic.main.fragment_about_city.*
-import kotlinx.android.synthetic.main.fragment_game.*
 
 /**
  * A simple [Fragment] subclass.
@@ -43,10 +41,13 @@ class AboutCityFragment : Fragment() {
         arguments?.getString("lastVisited")?.let {
             lastVisited = it
         }
-       back.setOnClickListener{
-           stopPreviousAudio()
-           mediaPlayer = MediaPlayer.create(context, resources.getIdentifier("go_back","raw",activity!!.packageName))
-           mediaPlayer.start()
+        back.setOnClickListener {
+            stopPreviousAudio()
+            mediaPlayer = MediaPlayer.create(
+                context,
+                resources.getIdentifier("go_back", "raw", activity!!.packageName)
+            )
+            mediaPlayer.start()
             fragmentUtil.replaceFragmentWith(
                 ScoresFragment(),
                 fragmentManager,
@@ -56,40 +57,63 @@ class AboutCityFragment : Fragment() {
             )
         }
         val imageResourceName = destinationCity.toString().toLowerCase() + "_city"
-        val id = resources.getIdentifier(imageResourceName,"drawable", activity!!.packageName)
+        val id = resources.getIdentifier(imageResourceName, "drawable", activity!!.packageName)
         city_image.setImageResource(id)
-        city_title.text = destinationCity + " " +resources.getString(R.string.city_title)
-        city_desc.text = resources.getString(resources.getIdentifier(destinationCity+"_tourism","string",activity!!.packageName))
-        city_env_desc.text = resources.getString(resources.getIdentifier(destinationCity+"_env","string",activity!!.packageName))
-        city_collect_text.text = resources.getString(resources.getIdentifier(destinationCity+"_collect","string",activity!!.packageName))
-        visit_text.text = resources.getString(R.string.visit) + " " + destinationCity + " " + resources.getString(R.string.from) + " " + source
+        city_title.text = destinationCity + " " + resources.getString(R.string.city_title)
+        city_desc.text = resources.getString(
+            resources.getIdentifier(
+                destinationCity + "_tourism",
+                "string",
+                activity!!.packageName
+            )
+        )
+        city_env_desc.text = resources.getString(
+            resources.getIdentifier(
+                destinationCity + "_env",
+                "string",
+                activity!!.packageName
+            )
+        )
+        city_collect_text.text = resources.getString(
+            resources.getIdentifier(
+                destinationCity + "_collect",
+                "string",
+                activity!!.packageName
+            )
+        )
+        visit_text.text =
+            resources.getString(R.string.visit) + " " + destinationCity + " " + resources.getString(
+                R.string.from
+            ) + " " + source
         Thread {
             val sourceCountry =
                 CountrySearchService().searchByString(source).get(0)
             val destinationCountry =
-                CountrySearchService().searchByString(resources.getString(resources.getIdentifier(destinationCity+"_country","string",activity!!.packageName))).get(0)
+                CountrySearchService().searchByString(
+                    resources.getString(
+                        resources.getIdentifier(
+                            destinationCity + "_country",
+                            "string",
+                            activity!!.packageName
+                        )
+                    )
+                ).get(0)
             val cheapestFlight = CheapestFlightSearchService().search(
                 sourceCountry, destinationCountry
             )
             activity!!.runOnUiThread {
-                if(cheapestFlight?.price == null)
-                {
-                    visit_text.visibility = View.INVISIBLE
-                }
-                if(fares_text!=null && cheapestFlight?.price !=null)
-                {
+                if (fares_text != null && cheapestFlight?.price != null) {
                     visit_text.visibility = View.VISIBLE
                     fares_text.visibility = View.VISIBLE
-                    fares_text.text = resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
+                    fares_text.text =
+                        resources.getString(R.string.fares_from) + "\n" + cheapestFlight?.price.toString() + "\u20ac"
                 }
             }
         }.start()
     }
 
-    private fun stopPreviousAudio()
-    {
-        if (this::mediaPlayer.isInitialized)
-        {
+    private fun stopPreviousAudio() {
+        if (this::mediaPlayer.isInitialized) {
             mediaPlayer.stop()
         }
     }

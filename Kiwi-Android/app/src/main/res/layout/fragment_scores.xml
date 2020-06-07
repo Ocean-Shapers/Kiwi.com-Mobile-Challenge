@@ -7,6 +7,20 @@
     android:background="@mipmap/background"
     tools:context=".fragment.ScoresFragment">
 
+    <Button
+        android:id="@+id/back_to_game"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/back_button"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/budapest_frame"
         android:layout_width="120dp"

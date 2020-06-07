@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.oceanshapers.kiwi.R
 import com.oceanshapers.kiwi.fragment.OptionsFragment
-import kotlinx.android.synthetic.main.fragment_about_city.*
+import kotlinx.android.synthetic.main.fragment_options.*
 
 class MainActivity : AppCompatActivity() {
     var background_music = MediaPlayer()
