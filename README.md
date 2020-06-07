@@ -21,6 +21,9 @@ Ocean Shapers develops a platform for video gaming, sustainable shopping, and co
 
 Visit us at www.oceanshapers.com to learn more about how we gamify environment protection!
 
+## Latest build
+app-release-1.0.apk which is next to the README.md
+
 ## Tools, IDE
 Android studio
 
