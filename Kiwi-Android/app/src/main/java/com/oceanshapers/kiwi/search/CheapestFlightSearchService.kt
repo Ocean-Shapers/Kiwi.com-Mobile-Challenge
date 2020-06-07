@@ -11,7 +11,7 @@ class CheapestFlightSearchService {
         private const val STATUS_CODE_OK = 200
         private const val FLIGHT_URL =
             "https://api.skypicker.com/flights?fly_from=%s&fly_to=%s&date_from=%s&date_to=%s&limit=1&sort=price&asc=1&partner=picky"
-        private const val FLIGHT_DATE_FORMAT = "MM/dd/yyyy"
+        private const val FLIGHT_DATE_FORMAT = "dd/MM/yyyy"
         private const val DATA_JSON_KEY = "data"
         private const val PRICE_JSON_KEY = "price"
         private const val NUMBER_OF_WEEK = 7L
